@@ -4,18 +4,10 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventosPro.Validator.ModelsValidator
 {
-    public class ModelValidator : DbContext
+    public class ModelValidator
     {
-        public ModelValidator(DbContextOptions<ModelValidator> options) : base(options) { }
-
-        public DbSet<User> Users { get; set; }
-        public DbSet<Event> Events { get; set; }
-        public DbSet<EventInvite> EventInvites { get; set; }
-
-        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        protected void ModelValidations(ModelBuilder modelBuilder)
         {
-            base.OnModelCreating(modelBuilder);
-
             // Settings User -> Events (1:N)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Events)
