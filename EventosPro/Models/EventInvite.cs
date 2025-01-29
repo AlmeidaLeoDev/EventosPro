@@ -17,15 +17,13 @@ namespace EventosPro.Models
 
         public DateTime? ResponseAt { get; set; }
 
-        [Required]
         [ForeignKey("Event")]
-        public int EventId { get; set; }
+        public int? EventId { get; set; }
 
         public Event Event { get; set; }
 
-        [Required]
         [ForeignKey("InvitedUser")]
-        public int InvitedUserId { get; set; }
+        public int? InvitedUserId { get; set; }
 
         public User InvitedUser { get; set; }
     }

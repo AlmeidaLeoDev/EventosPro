@@ -20,14 +20,14 @@ namespace EventosPro.Validator.ModelsValidator
                 .HasMany(e => e.EventInvites)
                 .WithOne(ei => ei.Event)
                 .HasForeignKey(ei => ei.EventId)
-                .OnDelete(DeleteBehavior.Cascade); // If an event is deleted, its invitations are deleted
+                .OnDelete(DeleteBehavior.SetNull); // If an event is deleted, its invitations are null
 
             // Settings User -> EventInvites (1:N)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.EventInvites)
                 .WithOne(ei => ei.InvitedUser)
                 .HasForeignKey(ei => ei.InvitedUserId)
-                .OnDelete(DeleteBehavior.Restrict); // If a user is deleted, their received invites are NOT deleted
+                .OnDelete(DeleteBehavior.SetNull); // If a user is deleted, their received invites are null
 
             // Settings de unicidade
             modelBuilder.Entity<User>()
