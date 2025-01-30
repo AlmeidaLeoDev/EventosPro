@@ -4,39 +4,49 @@ using Microsoft.EntityFrameworkCore;
 
 namespace EventosPro.Validator.ModelsValidator
 {
-    public class ModelValidator
+    public class ModelValidator : DbContext
     {
-        protected void ModelValidations(ModelBuilder modelBuilder)
+        public ModelValidator(DbContextOptions options) : base(options)
         {
-            // Settings User -> Events (1:N)
+        }
+
+        public DbSet<User> Users { get; set; }
+        public DbSet<Event> Events { get; set; }
+        public DbSet<EventInvite> EventInvites { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+
+            // User -> Events (1:N)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Events)
                 .WithOne(e => e.EventUser)
                 .HasForeignKey(e => e.EventUserId)
-                .OnDelete(DeleteBehavior.Cascade); // If a user is deleted, their events are deleted
+                .OnDelete(DeleteBehavior.Cascade);
 
-            // Settings Event -> EventInvites (1:N)
+            // Event -> EventInvites (1:N)
             modelBuilder.Entity<Event>()
                 .HasMany(e => e.EventInvites)
                 .WithOne(ei => ei.Event)
                 .HasForeignKey(ei => ei.EventId)
-                .OnDelete(DeleteBehavior.SetNull); // If an event is deleted, its invitations are null
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // Settings User -> EventInvites (1:N)
+            // User -> EventInvites (1:N)
             modelBuilder.Entity<User>()
                 .HasMany(u => u.EventInvites)
                 .WithOne(ei => ei.InvitedUser)
                 .HasForeignKey(ei => ei.InvitedUserId)
-                .OnDelete(DeleteBehavior.SetNull); // If a user is deleted, their received invites are null
+                .OnDelete(DeleteBehavior.SetNull);
 
-            // Settings de unicidade
+            // Settings
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Email)
                 .IsUnique();
 
             modelBuilder.Entity<EventInvite>()
                 .HasIndex(ei => new { ei.EventId, ei.InvitedUserId })
-                .IsUnique(); // Prevents duplicate invitations
+                .IsUnique();
         }
     }
 }
