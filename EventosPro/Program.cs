@@ -1,6 +1,8 @@
 using EventosPro.Context;
 using EventosPro.Repositories.Implementations;
 using EventosPro.Repositories.Interfaces;
+using EventosPro.Services.Implementations;
+using EventosPro.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -13,6 +15,8 @@ builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventInviteRepository, EventInviteRepository>();
+
+builder.Services.AddSingleton<ICryptographyService, CryptographyService>();
 
 var app = builder.Build();
 

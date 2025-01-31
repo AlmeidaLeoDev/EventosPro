@@ -2,7 +2,7 @@
 using EventosPro.Models;
 using Microsoft.EntityFrameworkCore;
 
-namespace EventosPro.Validator.ModelsValidator
+namespace EventosPro.Validators.ModelsValidator 
 {
     public class ModelValidator : DbContext
     {
