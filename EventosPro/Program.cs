@@ -17,6 +17,7 @@ builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventInviteRepository, EventInviteRepository>();
 
 builder.Services.AddSingleton<ICryptographyService, CryptographyService>();
+builder.Services.AddScoped<IPasswordService, PasswordService>();
 
 var app = builder.Build();
 
