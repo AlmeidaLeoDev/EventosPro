@@ -26,6 +26,9 @@ namespace EventosPro.Models
         public bool EmailConfirmed { get; set; }
 
         [Required]
+        public bool IsConfirmed { get; set; }
+
+        [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
 
