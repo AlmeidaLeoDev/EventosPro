@@ -3,6 +3,11 @@ using EventosPro.Repositories.Implementations;
 using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Implementations;
 using EventosPro.Services.Interfaces;
+using EventosPro.Validators.EventViewModelsValidators;
+using EventosPro.Validators.UserViewModelsValidators;
+using EventosPro.ViewModels.Events;
+using EventosPro.ViewModels.Users;
+using FluentValidation;
 using Microsoft.EntityFrameworkCore;
 using Quartz;
 
@@ -12,11 +17,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<ApplicationDbContex>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
+// Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
 builder.Services.AddScoped<IUserRepository, UserRepository>();
 builder.Services.AddScoped<IEventRepository, EventRepository>();
 builder.Services.AddScoped<IEventInviteRepository, EventInviteRepository>();
 
+// Services
 builder.Services.AddSingleton<ICryptographyService, CryptographyService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
 builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
@@ -25,6 +32,24 @@ builder.Services.AddScoped<IEmailService, EmailService>();
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDatabaseCleanupService, DatabaseCleanupService>();
 builder.Services.AddScoped<IEventService, EventService>(); 
+
+// Validators
+builder.Services.AddScoped<IValidator<ChangePasswordViewModel>, ChangePasswordValidator>();
+builder.Services.AddScoped<IValidator<EmailConfirmationViewModel>, EmailConfirmationValidator>();
+builder.Services.AddScoped<IValidator<ForgotPasswordViewModel>, ForgotPasswordValidator>();
+builder.Services.AddScoped<IValidator<LoginViewModel>, LoginValidator>();
+builder.Services.AddScoped<IValidator<RegisterViewModel>, RegisterValidator>();
+builder.Services.AddScoped<IValidator<ResetPasswordViewModel>, ResetPasswordValidator>();
+builder.Services.AddScoped<IValidator<UserProfileViewModel>, UserProfileValidator>();
+
+builder.Services.AddScoped<IValidator<CreateEventViewModel>, CreateEventValidator>();
+builder.Services.AddScoped<IValidator<CreateEventInviteViewModel>, CreateEventInviteValidator>();
+builder.Services.AddScoped<IValidator<EventDetailsViewModel>, EventDetailsValidator>();
+builder.Services.AddScoped<IValidator<EventInviteViewModel>, EventInviteValidator>();
+builder.Services.AddScoped<IValidator<EventListViewModel>, EventListValidator>();
+builder.Services.AddScoped<IValidator<RespondToInviteViewModel>, RespondToInviteValidator>();
+builder.Services.AddScoped<IValidator<UpdateEventViewModel>, UpdateEventValidator>();
+
 
 var app = builder.Build();
 
