@@ -22,6 +22,10 @@ namespace EventosPro.Models
         [StringLength(255)]
         public string PasswordHash { get; set; }
 
+        public string PasswordResetToken { get; set; }
+
+        public DateTime? PasswordResetTokenExpires { get; set; }
+
         [Required]
         public bool EmailConfirmed { get; set; }
 
