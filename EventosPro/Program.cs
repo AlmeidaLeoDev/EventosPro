@@ -4,6 +4,7 @@ using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Implementations;
 using EventosPro.Services.Interfaces;
 using Microsoft.EntityFrameworkCore;
+using Quartz;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -25,6 +26,26 @@ builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDatabaseCleanupService, DatabaseCleanupService>();
 
 var app = builder.Build();
+
+// Quartz
+builder.Services.AddQuartz(q =>
+{
+    var cleanupJobKey = new JobKey("DatabaseCleanupJob");
+    q.AddJob<DatabaseCleanupJob>(opts => opts.WithIdentity(cleanupJobKey));
+    q.AddTrigger(opts => opts
+        .ForJob(cleanupJobKey)
+        .WithIdentity("DatabaseCleanupTrigger")
+        .WithCronSchedule("0 */30 * ? * *")); // A cada 30 minutos
+
+    q.UseSimpleTypeLoader();
+    q.UseDefaultThreadPool(tp => tp.MaxConcurrency = 10);
+});
+
+builder.Services.AddQuartzHostedService(options =>
+{
+    options.WaitForJobsToComplete = true;
+    options.AwaitApplicationStarted = true;
+});
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
