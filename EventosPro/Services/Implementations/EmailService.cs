@@ -27,7 +27,7 @@ namespace EventosPro.Services.Implementations
 
             if (string.IsNullOrEmpty(email) || string.IsNullOrEmpty(encryptedPassword))
             {
-                throw new ApplicationException("As variáveis de ambiente EMAIL_ADDRESS ou EMAIL_PASSWORD não estão configuradas corretamente.");
+                throw new ApplicationException("The EMAIL_ADDRESS or EMAIL_PASSWORD environment variables are not set correctly.");
             }
 
             string decryptedPassword = _cryptographyService.Decrypt(encryptedPassword);
@@ -105,5 +105,17 @@ namespace EventosPro.Services.Implementations
             }
         }
 
+        public async Task SendEventInviteAsync(string email, string userName, string eventDescription, DateTime startTime)
+        {
+            var subject = "Convite para Evento - EventosPro";
+            var body = $@"
+                <h2>Olá {userName},</h2>
+                <p>Você foi convidado para o evento:</p>
+                <h3>{eventDescription}</h3>
+                <p>Data e Hora: {startTime:dd/MM/yyyy HH:mm}</p>
+                <p>Por favor, acesse sua conta para responder ao convite.</p>";
+
+            await SendEmailAsync(email, subject, body);
+        }
     }
 }
