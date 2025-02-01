@@ -1,6 +1,7 @@
 ﻿using EventosPro.Models;
 using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Interfaces;
+using Microsoft.AspNetCore.Identity;
 
 namespace EventosPro.Services.Implementations
 {
@@ -93,7 +94,7 @@ namespace EventosPro.Services.Implementations
                 if (user.IsConfirmed)
                 {
                     _logger.LogInformation("Email already confirmed for user {Email}", email);
-                    return; 
+                    return;
                 }
 
                 if (!_jwtTokenService.ValidateJwtToken(token) ||
@@ -103,7 +104,7 @@ namespace EventosPro.Services.Implementations
                 }
 
                 user.IsConfirmed = true;
-                user.ConfirmedAt = DateTime.UtcNow;  
+                user.ConfirmedAt = DateTime.UtcNow;
 
                 await _userRepository.UpdateAsync(user);
                 _logger.LogInformation("Successfully confirmed email for user {Email}", email);
@@ -156,8 +157,8 @@ namespace EventosPro.Services.Implementations
                 user.PasswordHash = hashedPassword;
 
                 user.CreatedAt = DateTime.UtcNow;
-                user.IsConfirmed = false; 
-                user.ConfirmationToken = await _jwtTokenService.GenerateJwtTokenAsync(user); 
+                user.IsConfirmed = false;
+                user.ConfirmationToken = await _jwtTokenService.GenerateJwtTokenAsync(user);
                 user.EmailConfirmationTokenExpires = _jwtTokenService.GetExpirationTime();
 
                 await _userRepository.AddAsync(user);
@@ -166,6 +167,26 @@ namespace EventosPro.Services.Implementations
             catch (Exception ex) when (ex is not InvalidOperationException)
             {
                 _logger.LogError(ex, "Error when adding new user with email {Email}", user.Email);
+                throw;
+            }
+        }
+
+        public async Task<bool> ValidateCredentialsAsync(string email, string password)
+        {
+            try
+            {
+                var user = await GetUserByEmailAsync(email);
+                if (user == null)
+                {
+                    _logger.LogWarning($"User with email {email} not found.");
+                    return false;
+                }
+
+                return _passwordService.VerifyPassword(password, user.PasswordHash);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "An error occurred while validating credentials for email {Email}.", email);
                 throw;
             }
         }
