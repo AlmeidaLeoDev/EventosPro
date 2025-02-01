@@ -18,6 +18,7 @@ builder.Services.AddScoped<IEventInviteRepository, EventInviteRepository>();
 
 builder.Services.AddSingleton<ICryptographyService, CryptographyService>();
 builder.Services.AddScoped<IPasswordService, PasswordService>();
+builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>(); 
 
