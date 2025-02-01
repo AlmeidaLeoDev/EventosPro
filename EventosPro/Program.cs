@@ -48,6 +48,9 @@ builder.Services.AddQuartzHostedService(options =>
     options.AwaitApplicationStarted = true;
 });
 
+// HttpContextAccessor
+builder.Services.AddHttpContextAccessor();
+
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
 {
