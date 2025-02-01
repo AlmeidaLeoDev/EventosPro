@@ -23,6 +23,7 @@
 
   <ItemGroup>
     <Folder Include="Validators\" />
+    <Folder Include="ViewModels\Events\" />
   </ItemGroup>
 
 </Project>
