@@ -11,6 +11,7 @@ namespace EventosPro.Services.Interfaces
         public Task UpdateUserAsync(User user);
         public Task AddUserAsync(User user, string password);
         public Task<bool> ValidateCredentialsAsync(string email, string password);
+        Task<User> GetUserByIdAsync(int userId);
 
     }
 }

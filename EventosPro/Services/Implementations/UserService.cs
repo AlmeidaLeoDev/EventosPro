@@ -190,6 +190,28 @@ namespace EventosPro.Services.Implementations
                 throw;
             }
         }
+
+        public async Task<User> GetUserByIdAsync(int userId)
+        {
+            try
+            {
+                var user = await _userRepository.GetByIdAsync(userId);
+
+                if (user == null)
+                {
+                    _logger.LogWarning("User with ID {UserId} not found.", userId);
+                    throw new KeyNotFoundException($"User with ID {userId} not found.");
+                }
+
+                _logger.LogInformation("User with ID {UserId} fetched successfully.", userId);
+                return user;
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error fetching user by ID: {UserId}", userId);
+                throw;
+            }
+        }
     }
 
 }

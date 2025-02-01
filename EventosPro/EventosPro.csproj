@@ -26,8 +26,4 @@
     <PackageReference Include="Quartz.AspNetCore" Version="3.13.1" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Controllers\" />
-  </ItemGroup>
-
 </Project>
