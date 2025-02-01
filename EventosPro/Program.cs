@@ -1,4 +1,5 @@
 using EventosPro.Context;
+using EventosPro.Mapping;
 using EventosPro.Repositories.Implementations;
 using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Implementations;
@@ -50,7 +51,10 @@ builder.Services.AddScoped<IValidator<EventListViewModel>, EventListValidator>()
 builder.Services.AddScoped<IValidator<RespondToInviteViewModel>, RespondToInviteValidator>();
 builder.Services.AddScoped<IValidator<UpdateEventViewModel>, UpdateEventValidator>();
 
+// Mapping
+builder.Services.AddAutoMapper(typeof(MappingProfile));
 
+// --
 var app = builder.Build();
 
 // Quartz
