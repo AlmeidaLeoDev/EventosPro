@@ -42,5 +42,34 @@ namespace EventosPro.Repositories.Implementations
                 .OrderBy(u => u.Name)
                 .ToListAsync();
         }
+
+        public async Task<IEnumerable<User>> GetUnconfirmedUsersAsync()
+        {
+            return await _dbSet
+                .Where(u => !u.IsConfirmed)
+                .ToListAsync();
+        }
+
+        public async Task<IEnumerable<User>> GetUsersWithExpiredTokensAsync()
+        {
+            var now = DateTime.UtcNow; // Usar UTC para consistência
+
+            return await _dbSet
+                .Where(u =>
+                    (u.EmailConfirmationTokenExpires != null && u.EmailConfirmationTokenExpires < now) ||
+                    (u.PasswordResetTokenExpires != null && u.PasswordResetTokenExpires < now)
+                )
+                .ToListAsync();
+        }
+
+        public async Task DeleteByIdAsync(int id)
+        {
+            var user = await _dbSet.FindAsync(id);
+            if (user != null)
+            {
+                _dbSet.Remove(user);
+                await _context.SaveChangesAsync();
+            }
+        }
     }
 }
