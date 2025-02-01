@@ -26,6 +26,10 @@ namespace EventosPro.Models
 
         public DateTime? PasswordResetTokenExpires { get; set; }
 
+        public string EmailConfirmationToken { get; set; }
+
+        public DateTime? EmailConfirmationTokenExpires { get; set; }
+
         [Required]
         public bool EmailConfirmed { get; set; }
 
@@ -35,6 +39,10 @@ namespace EventosPro.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime CreatedAt { get; set; }
+
+        public DateTime? ConfirmedAt { get; set; }
+
+        public string ConfirmationToken { get; set; }
 
         public DateTime? LastLoginAt { get; set; }
 
