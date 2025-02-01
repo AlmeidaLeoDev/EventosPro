@@ -24,6 +24,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>(); 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDatabaseCleanupService, DatabaseCleanupService>();
+builder.Services.AddScoped<IEventService, EventService>(); 
 
 var app = builder.Build();
 
