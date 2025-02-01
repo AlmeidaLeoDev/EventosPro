@@ -22,6 +22,7 @@ builder.Services.AddScoped<IPasswordResetService, PasswordResetService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>(); 
 builder.Services.AddScoped<IUserService, UserService>();
+builder.Services.AddScoped<IDatabaseCleanupService, DatabaseCleanupService>();
 
 var app = builder.Build();
 
