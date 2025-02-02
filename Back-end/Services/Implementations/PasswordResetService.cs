@@ -41,7 +41,7 @@ namespace EventosPro.Services.Implementations
 
                 await _userRepository.UpdateAsync(user);
 
-                string resetLink = $"https://yourdomain.com/reset-password?token={token}&email={Uri.EscapeDataString(email)}";
+                string resetLink = $"https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app/reset-password?token={token}&email={Uri.EscapeDataString(email)}";
                 string emailBody = $@"
                     <h2>Redefinição de Senha - EventosPro</h2>
                     <p>Olá {user.Name},</p>

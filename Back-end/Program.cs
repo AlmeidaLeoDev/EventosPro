@@ -88,7 +88,7 @@ builder.Services.AddCors(options =>
 {
     options.AddPolicy("SecurePolicy", policy =>
     {
-        policy.WithOrigins("your-allowed-origins")
+        policy.WithOrigins("https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app")
               .WithHeaders("your-allowed-headers") 
               .WithMethods("your-allowed-methods"); 
     });

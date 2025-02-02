@@ -53,7 +53,7 @@ namespace EventosPro.Services.Implementations
                 var expirationTime = _jwtTokenService.GetExpirationTime(); 
                 var expirationDays = Math.Ceiling((expirationTime - DateTime.UtcNow).TotalDays);
 
-                confirmationLink = $"https://yourdomain.com/confirm-email?token={confirmationToken}";
+                confirmationLink = $"https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app/confirm-email?token={confirmationToken}";
 
                 string emailBody = $@"
                 <p>Olá, {name}</p>
