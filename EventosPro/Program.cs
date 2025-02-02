@@ -1,5 +1,6 @@
 using EventosPro.Context;
 using EventosPro.Mapping;
+using EventosPro.Middlewares;
 using EventosPro.Repositories.Implementations;
 using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Implementations;
@@ -146,6 +147,7 @@ app.UseRouting();
 // Middleware
 app.UseAuthorization();
 app.UseAuthorization();
+app.UseMiddleware<SecurityHeadersMiddleware>();
 
 app.MapControllerRoute(
     name: "default",
