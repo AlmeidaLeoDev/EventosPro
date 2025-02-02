@@ -8,6 +8,9 @@ using System.Security.Claims;
 
 namespace EventosPro.Controllers
 {
+    /// <summary>
+    /// Controller for managing event-related operations such as creating, updating, and deleting events.
+    /// </summary>
     [Authorize]
     [Route("api/[controller]")]
     [ApiController]
@@ -30,7 +33,15 @@ namespace EventosPro.Controllers
             return int.Parse(userIdClaim?.Value ?? throw new UnauthorizedAccessException("User not authenticated"));
         }
 
+        /// <summary>
+        /// Retrieves all events for the current user.
+        /// </summary>
+        /// <returns>A list of events.</returns>
+        /// <response code="200">Events retrieved successfully.</response>
+        /// <response code="500">If an error occurs during the retrieval process.</response>
         [HttpGet]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventListViewModel))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventListViewModel>> GetUserEvents()
         {
             try
@@ -64,7 +75,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves a specific event by its ID.
+        /// </summary>
+        /// <param name="id">The ID of the event.</param>
+        /// <returns>The event details.</returns>
+        /// <response code="200">Event retrieved successfully.</response>
+        /// <response code="404">If the event is not found.</response>
+        /// <response code="500">If an error occurs during the retrieval process.</response>
         [HttpGet("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventDetailsViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventDetailsViewModel>> GetEvent(int id)
         {
             try
@@ -104,7 +126,20 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Creates a new event.
+        /// </summary>
+        /// <param name="model">The event data.</param>
+        /// <returns>The created event details.</returns>
+        /// <response code="201">Event created successfully.</response>
+        /// <response code="400">If the model state is invalid or the event data is invalid.</response>
+        /// <response code="409">If there is a conflict with existing data.</response>
+        /// <response code="500">If an error occurs during the creation process.</response>
         [HttpPost]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(EventDetailsViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventDetailsViewModel>> CreateEvent([FromBody] CreateEventViewModel model)
         {
             try
@@ -148,7 +183,21 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Updates an existing event.
+        /// </summary>
+        /// <param name="id">The ID of the event to update.</param>
+        /// <param name="model">The updated event data.</param>
+        /// <returns>The updated event details.</returns>
+        /// <response code="200">Event updated successfully.</response>
+        /// <response code="400">If the model state is invalid or the event data is invalid.</response>
+        /// <response code="409">If there is a conflict with existing data.</response>
+        /// <response code="500">If an error occurs during the update process.</response>
         [HttpPut("{id}")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventDetailsViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventDetailsViewModel>> UpdateEvent(int id, [FromBody] UpdateEventViewModel model)
         {
             try
@@ -202,7 +251,16 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Deletes an event.
+        /// </summary>
+        /// <param name="id">The ID of the event to delete.</param>
+        /// <returns>A response indicating the result of the deletion.</returns>
+        /// <response code="204">Event deleted successfully.</response>
+        /// <response code="500">If an error occurs during the deletion process.</response>
         [HttpDelete("{id}")]
+        [ProducesResponseType(StatusCodes.Status204NoContent)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteEvent(int id)
         {
             try
@@ -222,7 +280,17 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves events within a specified date range.
+        /// </summary>
+        /// <param name="start">The start date of the range.</param>
+        /// <param name="end">The end date of the range.</param>
+        /// <returns>A list of events within the specified range.</returns>
+        /// <response code="200">Events retrieved successfully.</response>
+        /// <response code="500">If an error occurs during the retrieval process.</response>
         [HttpGet("range")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(IEnumerable<EventDetailsViewModel>))]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<IEnumerable<EventDetailsViewModel>>> GetEventsInRange([FromQuery] DateTime start, [FromQuery] DateTime end)
         {
             try
@@ -253,7 +321,20 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Invites a user to an event.
+        /// </summary>
+        /// <param name="model">The invite data.</param>
+        /// <returns>The created invite details.</returns>
+        /// <response code="201">Invite created successfully.</response>
+        /// <response code="404">If the invited user is not found.</response>
+        /// <response code="409">If there is a conflict with existing data.</response>
+        /// <response code="500">If an error occurs during the invite creation process.</response>
         [HttpPost("invite")]
+        [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(EventInviteViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventInviteViewModel>> CreateInvite([FromBody] CreateEventInviteViewModel model)
         {
             try
@@ -296,7 +377,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Responds to an event invite.
+        /// </summary>
+        /// <param name="model">The invite response data.</param>
+        /// <returns>The updated invite details.</returns>
+        /// <response code="200">Invite response processed successfully.</response>
+        /// <response code="400">If the response data is invalid.</response>
+        /// <response code="500">If an error occurs during the response processing.</response>
         [HttpPost("invite-respond")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventInviteViewModel))]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<EventInviteViewModel>> RespondToInvite([FromBody] RespondToInviteViewModel model)
         {
             try

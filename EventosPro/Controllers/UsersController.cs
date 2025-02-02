@@ -8,6 +8,9 @@ using System.Security.Claims;
 
 namespace EventosPro.Controllers
 {
+    /// <summary>
+    /// Controller for managing user-related operations such as registration, login, and profile management.
+    /// </summary>
     [Route("api/[controller]")]
     [ApiController]
     public class UsersController : ControllerBase
@@ -29,7 +32,20 @@ namespace EventosPro.Controllers
             _logger = logger;
         }
 
+        /// <summary>
+        /// Registers a new user.
+        /// </summary>
+        /// <param name="model">The registration data.</param>
+        /// <returns>A response indicating the result of the registration.</returns>
+        /// <response code="200">Registration completed successfully.</response>
+        /// <response code="400">If the model state is invalid or passwords do not match.</response>
+        /// <response code="409">If the user already exists.</response>
+        /// <response code="500">If an error occurs during registration.</response>
         [HttpPost("register")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status409Conflict)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Register([FromBody] RegisterViewModel model)
         {
             try
@@ -65,7 +81,20 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Logs in a user.
+        /// </summary>
+        /// <param name="model">The login credentials.</param>
+        /// <returns>A response indicating the result of the login attempt.</returns>
+        /// <response code="200">Login successful.</response>
+        /// <response code="400">If the model state is invalid.</response>
+        /// <response code="401">If the credentials are invalid.</response>
+        /// <response code="500">If an error occurs during login.</response>
         [HttpPost("login")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status401Unauthorized)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Login([FromBody] LoginViewModel model)
         {
             try
@@ -94,8 +123,16 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Logs out the current user.
+        /// </summary>
+        /// <returns>A response indicating the result of the logout attempt.</returns>
+        /// <response code="200">Logout successful.</response>
+        /// <response code="500">If an error occurs during logout.</response>
         [Authorize]
         [HttpPost("logout")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> Logout()
         {
             try
@@ -110,7 +147,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Initiates a password reset for a user.
+        /// </summary>
+        /// <param name="model">The email address of the user.</param>
+        /// <returns>A response indicating the result of the password reset request.</returns>
+        /// <response code="200">Password reset initiated successfully.</response>
+        /// <response code="400">If the model state is invalid.</response>
+        /// <response code="500">If an error occurs during the password reset process.</response>
         [HttpPost("forgot-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ForgotPassword([FromBody] ForgotPasswordViewModel model)
         {
             try
@@ -128,7 +176,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Resets a user's password.
+        /// </summary>
+        /// <param name="model">The password reset data.</param>
+        /// <returns>A response indicating the result of the password reset.</returns>
+        /// <response code="200">Password reset successfully.</response>
+        /// <response code="400">If the model state is invalid or passwords do not match.</response>
+        /// <response code="500">If an error occurs during the password reset process.</response>
         [HttpPost("reset-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ResetPassword([FromBody] ResetPasswordViewModel model)
         {
             try
@@ -153,7 +212,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Confirms a user's email address.
+        /// </summary>
+        /// <param name="model">The email confirmation data.</param>
+        /// <returns>A response indicating the result of the email confirmation.</returns>
+        /// <response code="200">Email confirmed successfully.</response>
+        /// <response code="400">If the model state is invalid or the token is invalid.</response>
+        /// <response code="500">If an error occurs during the email confirmation process.</response>
         [HttpPost("confirm-email")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ConfirmEmail([FromBody] EmailConfirmationViewModel model)
         {
             try
@@ -175,8 +245,19 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Changes the password of the current user.
+        /// </summary>
+        /// <param name="model">The password change data.</param>
+        /// <returns>A response indicating the result of the password change.</returns>
+        /// <response code="200">Password changed successfully.</response>
+        /// <response code="400">If the model state is invalid or the current password is incorrect.</response>
+        /// <response code="500">If an error occurs during the password change process.</response>
         [Authorize]
         [HttpPost("change-password")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> ChangePassword([FromBody] ChangePasswordViewModel model)
         {
             try
@@ -202,8 +283,18 @@ namespace EventosPro.Controllers
             }
         }
 
+        /// <summary>
+        /// Retrieves the profile of the current user.
+        /// </summary>
+        /// <returns>The user's profile data.</returns>
+        /// <response code="200">Profile retrieved successfully.</response>
+        /// <response code="404">If the user is not found.</response>
+        /// <response code="500">If an error occurs during the profile retrieval process.</response>
         [Authorize]
         [HttpGet("profile")]
+        [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(UserProfileViewModel))]
+        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<ActionResult<UserProfileViewModel>> GetProfile()
         {
             try
