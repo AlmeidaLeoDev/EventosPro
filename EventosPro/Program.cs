@@ -81,6 +81,25 @@ builder.Services.AddQuartzHostedService(options =>
     options.AwaitApplicationStarted = true;
 });
 
+// Cors
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("SecurePolicy", policy =>
+    {
+        policy.WithOrigins("your-allowed-origins")
+              .WithHeaders("your-allowed-headers") 
+              .WithMethods("your-allowed-methods"); 
+    });
+});
+
+// Hsts
+builder.Services.AddHsts(options =>
+{
+    options.MaxAge = TimeSpan.FromDays(365);
+    options.IncludeSubDomains = true;
+    options.Preload = true;
+});
+
 // HttpContextAccessor
 builder.Services.AddHttpContextAccessor();
 

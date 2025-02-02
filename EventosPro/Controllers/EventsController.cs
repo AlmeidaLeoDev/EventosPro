@@ -2,6 +2,7 @@
 using EventosPro.Services.Interfaces;
 using EventosPro.ViewModels.Events;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -13,6 +14,8 @@ namespace EventosPro.Controllers
     /// </summary>
     [Authorize]
     [Route("api/[controller]")]
+    [EnableCors("SecurePolicy")] // CORS policy
+    [RequireHttps] // Force HTTPS
     [ApiController]
     public class EventsController : ControllerBase
     {

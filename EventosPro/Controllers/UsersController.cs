@@ -2,6 +2,7 @@
 using EventosPro.Services.Interfaces;
 using EventosPro.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Security.Claims;
@@ -12,6 +13,8 @@ namespace EventosPro.Controllers
     /// Controller for managing user-related operations such as registration, login, and profile management.
     /// </summary>
     [Route("api/[controller]")]
+    [EnableCors("SecurePolicy")] // CORS policy
+    [RequireHttps] // Force HTTPS
     [ApiController]
     public class UsersController : ControllerBase
     {
@@ -323,5 +326,6 @@ namespace EventosPro.Controllers
                 return StatusCode(500, "An error occurred while retrieving your profile.");
             }
         }
+
     }
 }
