@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Cors;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.RateLimiting;
 using System.Security.Claims;
 
 namespace EventosPro.Controllers
@@ -16,6 +17,8 @@ namespace EventosPro.Controllers
     [Route("api/[controller]")]
     [EnableCors("SecurePolicy")] // CORS policy
     [RequireHttps] // Force HTTPS
+    [Produces("application/json")]
+    [EnableRateLimiting("fixed")]
     [ApiController]
     public class EventsController : ControllerBase
     {
