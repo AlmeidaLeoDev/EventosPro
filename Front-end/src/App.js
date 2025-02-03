@@ -18,7 +18,7 @@ import InviteForm from './components/InviteForm';
 import InviteResponsePage from './containers/InviteResponsePage';
 
 // Global styles
-import '';
+import './styles/styles';
 
 function App() {
   return (
