@@ -141,7 +141,7 @@ namespace EventosPro.Controllers
         /// <response code="400">If the model state is invalid or the event data is invalid.</response>
         /// <response code="409">If there is a conflict with existing data.</response>
         /// <response code="500">If an error occurs during the creation process.</response>
-        [HttpPost]
+        [HttpPost("create-event")]
         [ProducesResponseType(StatusCodes.Status201Created, Type = typeof(EventDetailsViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -199,7 +199,7 @@ namespace EventosPro.Controllers
         /// <response code="400">If the model state is invalid or the event data is invalid.</response>
         /// <response code="409">If there is a conflict with existing data.</response>
         /// <response code="500">If an error occurs during the update process.</response>
-        [HttpPut("{id}")]
+        [HttpPut("update-event")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventDetailsViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]
@@ -264,7 +264,7 @@ namespace EventosPro.Controllers
         /// <returns>A response indicating the result of the deletion.</returns>
         /// <response code="204">Event deleted successfully.</response>
         /// <response code="500">If an error occurs during the deletion process.</response>
-        [HttpDelete("{id}")]
+        [HttpDelete("delete-event")]
         [ProducesResponseType(StatusCodes.Status204NoContent)]
         [ProducesResponseType(StatusCodes.Status500InternalServerError)]
         public async Task<IActionResult> DeleteEvent(int id)
