@@ -1,7 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import FullCalendar from '@fullcalendar/react';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
+import React, { useState, useEffect } from 'react';
 
 function EventForm({ initialData = {}, onSubmit }) {
   const [description, setDescription] = useState('');
@@ -11,15 +9,10 @@ function EventForm({ initialData = {}, onSubmit }) {
   useEffect(() => {
     if (initialData) {
       setDescription(initialData.description || '');
-      setStartTime(initialData.startTime ? initialData.startTime.slice(0, 16) : '');
-      setEndTime(initialData.endTime ? initialData.endTime.slice(0, 16) : '');
+      setStartTime(initialData.startTime || '');
+      setEndTime(initialData.endTime || '');
     }
   }, [initialData]);
-
-  const handleDateClick = (info) => {
-    setStartTime(info.dateStr);
-    setEndTime(info.dateStr);
-  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -53,14 +46,6 @@ function EventForm({ initialData = {}, onSubmit }) {
           value={endTime}
           onChange={(e) => setEndTime(e.target.value)}
           required
-        />
-      </div>
-      <div>
-        <label>Selecione Data no Calendário:</label>
-        <FullCalendar
-          plugins={[dayGridPlugin, timeGridPlugin]}
-          initialView="dayGridMonth"
-          dateClick={handleDateClick}
         />
       </div>
       <button type="submit">Salvar</button>
