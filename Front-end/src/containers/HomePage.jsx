@@ -1,7 +1,6 @@
 import { useEffect, useState } from 'react';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
@@ -32,12 +31,31 @@ function HomePage() {
     navigate(`/edit-event/${clickInfo.event.id}`);
   };
 
+  
+  // 🔹 Função de logout: Remove o token de autenticação e redireciona para a página de login
+  const handleLogout = () => {
+    localStorage.removeItem("authToken"); // Remove o token do localStorage
+    sessionStorage.removeItem("authToken"); // Remove o token do sessionStorage (caso esteja armazenado temporariamente)
+    navigate("/login"); // Redireciona para a tela de login
+  };
+
   return (
     <div className="container">
-      <h1>Meu Calendário de Eventos</h1>
-      <button onClick={() => navigate('/create-event')}>Criar Novo Evento</button>
+      {/* 🔹 Cabeçalho com título e botão de logout alinhados */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <h1>Meu Calendário de Eventos</h1>
+        {/* 🔹 Botão de Logout para sair da conta */}
+        <button onClick={handleLogout} style={{ backgroundColor: "red", color: "white" }}>
+          Logout
+        </button>
+      </div>
+
+      {/* Botão para criar um novo evento */}
+      <button onClick={() => navigate("/create-event")}>Criar Novo Evento</button>
+
+      {/* Componente do calendário */}
       <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
+        plugins={[dayGridPlugin]}
         initialView="dayGridMonth"
         events={events}
         eventClick={handleEventClick}

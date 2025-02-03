@@ -25,7 +25,7 @@ function EditEventPage() {
 
   const handleUpdateEvent = async (formData) => {
     try {
-      await api.put(`/events/${id}`, { id, ...formData });
+      await api.put(`/events/update-event`, { id, ...formData });
       navigate('/');
     } catch (error) {
       console.error('Error updating event:', error);
@@ -36,7 +36,7 @@ function EditEventPage() {
   const handleDeleteEvent = async () => {
     if (window.confirm('Tem certeza que deseja excluir este evento?')) {
       try {
-        await api.delete(`/events/${id}`);
+        await api.delete(`/events/delete-event`);
         navigate('/');
       } catch (error) {
         console.error('Error deleting event:', error);

@@ -35,11 +35,11 @@ function App() {
         {/* Events routes */}
         <Route path="/" element={<HomePage />} />
         <Route path="/create-event" element={<CreateEventPage />} />
-        <Route path="/edit-event/:id" element={<EditEventPage />} />
+        <Route path="/update-event/:id" element={<EditEventPage />} />
 
         {/* Invites routes */}
-        <Route path="/send-invite" element={<InviteForm />} />
-        <Route path="/respond-invite" element={<InviteResponsePage />} />
+        <Route path="/invite" element={<InviteForm />} />
+        <Route path="/invite-respond" element={<InviteResponsePage />} />
       </Routes>
     </Router>
   );
