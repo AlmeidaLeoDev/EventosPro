@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
@@ -14,7 +14,7 @@ function CreateEventPage() {
   
   const handleCreateEvent = async (formData) => {
     try {
-      const response = await api.post('/events', formData);
+      await api.post('/events', formData);
       navigate('/');
     } catch (error) {
       console.error('Error creating event:', error);

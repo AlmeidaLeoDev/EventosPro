@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import EventForm from '../components/EventForm';
 import api from '../services/api';
@@ -8,7 +8,7 @@ function EditEventPage() {
   const navigate = useNavigate();
   const [eventData, setEventData] = useState(null);
 
-  const fetchEvent = async () => {
+  const fetchEvent = useCallback(async () => {
     try {
       const response = await api.get(`/events/${id}`);
       setEventData(response.data);
@@ -17,11 +17,11 @@ function EditEventPage() {
       alert('Evento não encontrado');
       navigate('/');
     }
-  };
+  }, [id, navigate]);
 
   useEffect(() => {
     fetchEvent();
-  }, [id]);
+  }, [fetchEvent]);
 
   const handleUpdateEvent = async (formData) => {
     try {

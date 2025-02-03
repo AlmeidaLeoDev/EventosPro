@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
 
@@ -12,22 +12,23 @@ function ConfirmEmailPage() {
   const token = searchParams.get('token');
   const email = searchParams.get('email'); 
 
-  useEffect(() => {
-    if (token && email) {
-      confirmEmail(token, email);
-    }
-  }, [token, email]);
-
-  const confirmEmail = async (token, email) => {
+  // Usando useCallback para garantir que a função confirmEmail não seja recriada em cada renderização
+  const confirmEmail = useCallback(async (token, email) => {
     try {
-      const response = await api.post('/users/confirm-email', { email, token });
+      await api.post('/users/confirm-email', { email, token });
       setStatus('Email confirmado com sucesso!');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
       console.error('Error in email confirmation:', error.response?.data || error.message);
       setStatus('Erro ao confirmar o e-mail.');
     }
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    if (token && email) {
+      confirmEmail(token, email);
+    }
+  }, [token, email, confirmEmail]);
 
   return (
     <div className="container">
