@@ -22,6 +22,7 @@ var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
+builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContex>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 // Repositories
@@ -86,13 +87,13 @@ builder.Services.AddQuartzHostedService(options =>
 // Cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("SecurePolicy", policy =>
-    {
-        policy.WithOrigins("https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app")
-              .WithHeaders("your-allowed-headers") 
-              .WithMethods("your-allowed-methods"); 
-    });
+    options.AddPolicy("AllowReactApp", builder =>
+        builder.WithOrigins("https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app")
+               .AllowAnyMethod()
+               .AllowAnyHeader());
 });
+
+app.UseCors("AllowReactApp");
 
 // Hsts
 builder.Services.AddHsts(options =>
