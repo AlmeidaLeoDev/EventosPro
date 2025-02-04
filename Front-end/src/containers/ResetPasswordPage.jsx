@@ -1,6 +1,8 @@
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import api from '../services/api';
+import {Container, FormCard, Title, FormGroup, InputLabel, PasswordInput, SubmitButton, LinkText} from '../components/ResetPasswordStyles'
+
 
 function ResetPasswordPage() {
   const [newPassword, setNewPassword] = useState('');
@@ -30,20 +32,40 @@ function ResetPasswordPage() {
   };
 
   return (
-    <div className="container">
-      <h2>Resetar Senha</h2>
-      <form onSubmit={handleResetPassword} className="auth-form">
-        <div>
-          <label>Nova Senha:</label>
-          <input type="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
-        </div>
-        <div>
-          <label>Confirmar Nova Senha:</label>
-          <input type="password" value={confirmNewPassword} required onChange={(e) => setConfirmNewPassword(e.target.value)} />
-        </div>
-        <button type="submit">Resetar Senha</button>
-      </form>
-    </div>
+    <Container>
+      <FormCard>
+        <Title>Redefinir Senha</Title>
+        <form onSubmit={handleResetPassword}>
+          <FormGroup>
+            <InputLabel>Nova Senha</InputLabel>
+            <PasswordInput
+              type="password"
+              value={newPassword}
+              required
+              onChange={(e) => setNewPassword(e.target.value)}
+              placeholder="Digite sua nova senha"
+            />
+          </FormGroup>
+
+          <FormGroup>
+            <InputLabel>Confirmar Nova Senha</InputLabel>
+            <PasswordInput
+              type="password"
+              value={confirmNewPassword}
+              required
+              onChange={(e) => setConfirmNewPassword(e.target.value)}
+              placeholder="Confirme sua nova senha"
+            />
+          </FormGroup>
+
+          <SubmitButton type="submit">Redefinir Senha</SubmitButton>
+        </form>
+
+        <LinkText>
+          Lembrou da senha? <a href="/login">Faça login</a>
+        </LinkText>
+      </FormCard>
+    </Container>
   );
 }
 
