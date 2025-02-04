@@ -3,14 +3,22 @@ import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
+import {
+  Container,
+  Header,
+  Title,
+  LogoutButton,
+  CalendarWrapper,
+  CreateEventButton
+} from '../components/HomeStyles';
 
 function HomePage() {
   const [events, setEvents] = useState([]);
-  const navigate = useNavigate(); 
+  const navigate = useNavigate();
 
   const fetchEvents = async () => {
     try {
-      const response = await api.get('/events'); 
+      const response = await api.get('/events');
       const mappedEvents = response.data.events.map((event) => ({
         id: event.id,
         title: event.description,
@@ -31,37 +39,40 @@ function HomePage() {
     navigate(`/edit-event/${clickInfo.event.id}`);
   };
 
-  
-  // 🔹 Função de logout: Remove o token de autenticação e redireciona para a página de login
   const handleLogout = () => {
-    localStorage.removeItem("authToken"); // Remove o token do localStorage
-    sessionStorage.removeItem("authToken"); // Remove o token do sessionStorage (caso esteja armazenado temporariamente)
-    navigate("/login"); // Redireciona para a tela de login
+    localStorage.removeItem("authToken");
+    sessionStorage.removeItem("authToken");
+    navigate("/login");
   };
 
   return (
-    <div className="container">
-      {/* 🔹 Cabeçalho com título e botão de logout alinhados */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
-        <h1>Meu Calendário de Eventos</h1>
-        {/* 🔹 Botão de Logout para sair da conta */}
-        <button onClick={handleLogout} style={{ backgroundColor: "red", color: "white" }}>
-          Logout
-        </button>
-      </div>
+    <Container>
+      <Header>
+        <Title>Meu Calendário de Eventos</Title>
+        <LogoutButton onClick={handleLogout}>Logout</LogoutButton>
+      </Header>
 
-      {/* Botão para criar um novo evento */}
-      <button onClick={() => navigate("/create-event")}>Criar Novo Evento</button>
+      <CreateEventButton onClick={() => navigate("/create-event")}>
+        Criar Novo Evento
+      </CreateEventButton>
 
-      {/* Componente do calendário */}
-      <FullCalendar
-        plugins={[dayGridPlugin]}
-        initialView="dayGridMonth"
-        events={events}
-        eventClick={handleEventClick}
-        height="auto"
-      />
-    </div>
+      <CalendarWrapper>
+        <FullCalendar
+          plugins={[dayGridPlugin]}
+          initialView="dayGridMonth"
+          events={events}
+          eventClick={handleEventClick}
+          height="auto"
+          headerToolbar={{
+            start: 'title',
+            center: '',
+            end: 'today prev,next'
+          }}
+          eventColor="#007bff"
+          eventTextColor="white"
+        />
+      </CalendarWrapper>
+    </Container>
   );
 }
 
