@@ -1,6 +1,8 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useNavigate, useLocation } from 'react-router-dom';
 import api from '../services/api';
+import { Container, Heading, StatusMessage } from '../components/ConfirmEmailStyles';
+
 
 function ConfirmEmailPage() {
   const navigate = useNavigate();
@@ -10,9 +12,8 @@ function ConfirmEmailPage() {
 
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get('token');
-  const email = searchParams.get('email'); 
+  const email = searchParams.get('email');
 
-  // Usando useCallback para garantir que a função confirmEmail não seja recriada em cada renderização
   const confirmEmail = useCallback(async (token, email) => {
     try {
       await api.post('/users/confirm-email', { email, token });
@@ -31,14 +32,14 @@ function ConfirmEmailPage() {
   }, [token, email, confirmEmail]);
 
   return (
-    <div className="container">
-      <h2>Confirmação de E-mail</h2>
+    <Container>
+      <Heading>Confirmação de E-mail</Heading>
       {status ? (
-        <p>{status}</p>
+        <StatusMessage success={status === 'Email confirmado com sucesso!'}>{status}</StatusMessage>
       ) : (
-        <p>Confirmando seu e-mail...</p>
+        <StatusMessage>Confirmando seu e-mail...</StatusMessage>
       )}
-    </div>
+    </Container>
   );
 }
 
