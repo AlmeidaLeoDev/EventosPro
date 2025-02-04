@@ -1,6 +1,6 @@
 import { useState, useEffect, useCallback } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import EventForm from '../components/EventForm';
+import EventForm from '../components/EventFormStyles';
 import api from '../services/api';
 
 function EditEventPage() {
