@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { Navigate } from 'react-router-dom';
 
 // Authentication containers
 import LoginPage from './containers/LoginPage';
@@ -20,10 +21,13 @@ import EventInvitePage from './containers/EventInvitePage';
 // Global styles
 import './styles/styles';
 
+
 function App() {
   return (
     <Router>
       <Routes>
+        <Route path="/" element={<Navigate to="/login" />} />
+
         {/* Authentication routes */}
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
