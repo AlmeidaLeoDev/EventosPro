@@ -2,6 +2,18 @@ import { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 import { AuthContext } from '../context/AuthContext';
+import {
+  Container,
+  Form,
+  Title,
+  InputGroup,
+  Label,
+  Input,
+  Button,
+  LinkText,
+} from '../components/LoginStyles';
+
+
 
 function LoginPage() {
   const [email, setEmail] = useState('');
@@ -22,26 +34,36 @@ function LoginPage() {
   };
 
   return (
-    <div className="container">
-      <h2>Login</h2>
-      <form onSubmit={handleLogin} className="auth-form">
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} required onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Senha:</label>
-          <input type="password" value={password} required onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <button type="submit">Entrar</button>
-      </form>
-      <p>
-        Não tem conta? <a href="/register">Cadastre-se</a>
-      </p>
-      <p>
-        Esqueceu sua senha? <a href="/forgot-password">Recuperar senha</a>
-      </p>
-    </div>
+    <Container>
+      <Form onSubmit={handleLogin}>
+        <Title>Login</Title>
+        <InputGroup>
+          <Label>Email:</Label>
+          <Input
+            type="email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>Senha:</Label>
+          <Input
+            type="password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </InputGroup>
+        <Button type="submit">Entrar</Button>
+        <LinkText>
+          Não tem conta? <a href="/register">Cadastre-se</a>
+        </LinkText>
+        <LinkText>
+          Esqueceu sua senha? <a href="/forgot-password">Recuperar senha</a>
+        </LinkText>
+      </Form>
+    </Container>
   );
 }
 
