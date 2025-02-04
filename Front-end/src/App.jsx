@@ -16,7 +16,7 @@ import EditEventPage from './containers/EditEventPage';
 
 // Invite pages
 import InviteForm from './components/InviteForm';
-import EventInvitePage from './containers/EventInvitePage';
+import InviteRespondPage from './containers/InviteRespondPage';
 
 // Global styles
 import './styles/styles';
@@ -43,7 +43,7 @@ function App() {
 
         {/* Invites routes */}
         <Route path="/invite" element={<InviteForm />} />
-        <Route path="/invite-respond" element={<EventInvitePage />} />
+        <Route path="/invite-respond" element={<InviteRespondPage />} />
       </Routes>
     </Router>
   );

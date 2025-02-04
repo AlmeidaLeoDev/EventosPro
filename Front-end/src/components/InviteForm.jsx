@@ -1,5 +1,5 @@
 import { useForm } from 'react-hook-form';
-import api from '../services/api'; // Ajuste o caminho conforme sua estrutura de pastas
+import api from '../services/api'; 
 
 const InviteForm = () => {
   const {
