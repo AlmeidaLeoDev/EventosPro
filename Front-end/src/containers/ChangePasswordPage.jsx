@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import api from '../services/api';
+import { Container, Title, Form, Label, Input, Button } from '../components/ChangePasswordStyle';
 
 function ChangePasswordPage() {
   const [currentPassword, setCurrentPassword] = useState('');
@@ -18,24 +19,24 @@ function ChangePasswordPage() {
   };
 
   return (
-    <div className="container">
-      <h2>Alterar Senha</h2>
-      <form onSubmit={handleChangePassword} className="auth-form">
+    <Container>
+      <Title>Alterar Senha</Title>
+      <Form onSubmit={handleChangePassword}>
         <div>
-          <label>Senha Atual:</label>
-          <input type="password" value={currentPassword} required onChange={(e) => setCurrentPassword(e.target.value)} />
+          <Label>Senha Atual:</Label>
+          <Input type="password" value={currentPassword} required onChange={(e) => setCurrentPassword(e.target.value)} />
         </div>
         <div>
-          <label>Nova Senha:</label>
-          <input type="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
+          <Label>Nova Senha:</Label>
+          <Input type="password" value={newPassword} required onChange={(e) => setNewPassword(e.target.value)} />
         </div>
         <div>
-          <label>Confirmar Nova Senha:</label>
-          <input type="password" value={confirmNewPassword} required onChange={(e) => setConfirmNewPassword(e.target.value)} />
+          <Label>Confirmar Nova Senha:</Label>
+          <Input type="password" value={confirmNewPassword} required onChange={(e) => setConfirmNewPassword(e.target.value)} />
         </div>
-        <button type="submit">Alterar Senha</button>
-      </form>
-    </div>
+        <Button type="submit">Alterar Senha</Button>
+      </Form>
+    </Container>
   );
 }
 
