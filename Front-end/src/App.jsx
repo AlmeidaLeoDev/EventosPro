@@ -15,7 +15,7 @@ import EditEventPage from './containers/EditEventPage';
 
 // Invite pages
 import InviteForm from './components/InviteForm';
-import InviteResponsePage from './containers/InviteResponsePage';
+import EventInvitePage from './containers/EventInvitePage';
 
 // Global styles
 import './styles/styles';
@@ -33,16 +33,18 @@ function App() {
         <Route path="/change-password" element={<ChangePasswordPage />} />
 
         {/* Events routes */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/home" element={<HomePage />} />
         <Route path="/create-event" element={<CreateEventPage />} />
         <Route path="/update-event/:id" element={<EditEventPage />} />
 
         {/* Invites routes */}
         <Route path="/invite" element={<InviteForm />} />
-        <Route path="/invite-respond" element={<InviteResponsePage />} />
+        <Route path="/invite-respond" element={<EventInvitePage />} />
       </Routes>
     </Router>
   );
 }
+
+
 
 export default App;

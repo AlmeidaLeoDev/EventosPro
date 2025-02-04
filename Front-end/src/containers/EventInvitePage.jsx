@@ -2,7 +2,7 @@ import { useForm } from 'react-hook-form';
 import { useLocation } from 'react-router-dom';
 import api from '../services/api'; 
 
-const InviteResponsePage = () => {
+const EventInvitePage = () => {
   const location = useLocation();
   const queryParams = new URLSearchParams(location.search);
   const inviteId = queryParams.get('inviteId');
@@ -15,8 +15,6 @@ const InviteResponsePage = () => {
 
   const onSubmit = async (data) => {
     try {
-      // Monta o payload de resposta ao convite.
-      // Espera-se um modelo com as propriedades: InviteId e Response.
       const payload = { InviteId: inviteId, Response: data.response };
       await api.post('/api/events/invite-respond', payload);
       alert('Resposta registrada com sucesso!');
@@ -52,4 +50,4 @@ const InviteResponsePage = () => {
   );
 };
 
-export default InviteResponsePage;
+export default EventInvitePage;

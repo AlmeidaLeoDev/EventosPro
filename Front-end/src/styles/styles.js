@@ -91,4 +91,4 @@ const myGlobalStyles = createGlobalStyle`
   }
   
   `
-  export default myGlobalStyles
+  export default myGlobalStyles 
