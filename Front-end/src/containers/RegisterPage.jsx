@@ -2,6 +2,17 @@ import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import api from '../services/api';
 
+import {
+  Container,
+  Form,
+  Title,
+  InputGroup,
+  Label,
+  Input,
+  Button,
+  LinkText,
+} from '../components/RegisterStyles';
+
 function RegisterPage() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
@@ -23,31 +34,51 @@ function RegisterPage() {
   };
 
   return (
-    <div className="container">
-      <h2>Cadastro</h2>
-      <form onSubmit={handleRegister} className="auth-form">
-        <div>
-          <label>Nome:</label>
-          <input type="text" value={name} required onChange={(e) => setName(e.target.value)} />
-        </div>
-        <div>
-          <label>Email:</label>
-          <input type="email" value={email} required onChange={(e) => setEmail(e.target.value)} />
-        </div>
-        <div>
-          <label>Senha:</label>
-          <input type="password" value={password} required onChange={(e) => setPassword(e.target.value)} />
-        </div>
-        <div>
-          <label>Confirmar Senha:</label>
-          <input type="password" value={confirmPassword} required onChange={(e) => setConfirmPassword(e.target.value)} />
-        </div>
-        <button type="submit">Cadastrar</button>
-      </form>
-      <p>
-        Já tem conta? <a href="/login">Entre</a>
-      </p>
-    </div>
+    <Container>
+      <Form onSubmit={handleRegister}>
+        <Title>Cadastro</Title>
+        <InputGroup>
+          <Label>Nome:</Label>
+          <Input
+            type="text"
+            value={name}
+            required
+            onChange={(e) => setName(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>Email:</Label>
+          <Input
+            type="email"
+            value={email}
+            required
+            onChange={(e) => setEmail(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>Senha:</Label>
+          <Input
+            type="password"
+            value={password}
+            required
+            onChange={(e) => setPassword(e.target.value)}
+          />
+        </InputGroup>
+        <InputGroup>
+          <Label>Confirmar Senha:</Label>
+          <Input
+            type="password"
+            value={confirmPassword}
+            required
+            onChange={(e) => setConfirmPassword(e.target.value)}
+          />
+        </InputGroup>
+        <Button type="submit">Cadastrar</Button>
+        <LinkText>
+          Já tem conta? <a href="/login">Entre</a>
+        </LinkText>
+      </Form>
+    </Container>
   );
 }
 
