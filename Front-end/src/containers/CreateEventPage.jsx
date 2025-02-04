@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import timeGridPlugin from '@fullcalendar/timegrid';
-import EventForm from '../components/EventForm';
 import api from '../services/api';
+import EventForm from '../components/EventFormStyles';
+import { Container, StyledHeading, CalendarWrapper } from '../components/CreateEventStyles';
 
 function CreateEventPage() {
   const navigate = useNavigate();
@@ -30,21 +31,23 @@ function CreateEventPage() {
   };
 
   return (
-    <div className="container">
-      <h2>Criar Evento</h2>
+    <Container>
+      <StyledHeading>Criar Evento</StyledHeading>
 
-      <FullCalendar
-        plugins={[dayGridPlugin, timeGridPlugin]}
-        initialView="dayGridMonth"
-        select={handleDateSelect}  
-        selectable={true} 
-      />
+      <CalendarWrapper>
+        <FullCalendar
+          plugins={[dayGridPlugin, timeGridPlugin]}
+          initialView="dayGridMonth"
+          select={handleDateSelect}
+          selectable={true}
+        />
+      </CalendarWrapper>
 
       <EventForm
         onSubmit={handleCreateEvent}
-        initialData={{ startTime, endTime }} 
+        initialData={{ startTime, endTime }}
       />
-    </div>
+    </Container>
   );
 }
 
