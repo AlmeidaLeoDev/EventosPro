@@ -1,5 +1,6 @@
 ﻿using EventosPro.Services.Interfaces;
 using Microsoft.Extensions.Logging;
+using Quartz.Logging;
 using System.Security.Cryptography;
 using System.Text;
 
@@ -16,12 +17,12 @@ namespace EventosPro.Services.Implementations
 
             _logger.LogInformation("Initializing CryptographyService...");
 
-            string key = Environment.GetEnvironmentVariable("CRYPTO_KEY")
+            string keyFromEnv = Environment.GetEnvironmentVariable("CRYPTO_KEY")
                          ?? throw new InvalidOperationException("Encryption key not configured in the environment.");
 
             _logger.LogInformation("Encryption key obtained from environment variables.");
 
-            _key = Encoding.UTF8.GetBytes(key);
+            _key = Encoding.UTF8.GetBytes(keyFromEnv);
 
             if (_key.Length != 16 && _key.Length != 24 && _key.Length != 32)
             {
@@ -32,24 +33,17 @@ namespace EventosPro.Services.Implementations
             _logger.LogInformation("Encryption key validated successfully.");
         }
 
-        public string Encrypt(string plainText)
+        public string Encrypt(string plainText) 
         {
-            _logger.LogInformation("Starting encryption...");
-
             using (Aes aes = Aes.Create())
             {
-                _logger.LogInformation("AES instance created.");
-
                 aes.Key = _key;
-                _logger.LogInformation("AES key set.");
-
                 aes.GenerateIV();
-                _logger.LogInformation("IV generated"); 
+                aes.Mode = CipherMode.CBC;
+                aes.Padding = PaddingMode.PKCS7;
 
                 using (var encryptor = aes.CreateEncryptor(aes.Key, aes.IV))
                 {
-                    _logger.LogInformation("Encryptor created.");
-
                     byte[] plainBytes = Encoding.UTF8.GetBytes(plainText);
                     byte[] encryptedBytes = encryptor.TransformFinalBlock(plainBytes, 0, plainBytes.Length);
 
@@ -57,7 +51,6 @@ namespace EventosPro.Services.Implementations
                     Buffer.BlockCopy(aes.IV, 0, combinedData, 0, aes.IV.Length);
                     Buffer.BlockCopy(encryptedBytes, 0, combinedData, aes.IV.Length, encryptedBytes.Length);
 
-                    _logger.LogInformation("Encryption completed successfully.");
                     return Convert.ToBase64String(combinedData);
                 }
             }
@@ -67,32 +60,71 @@ namespace EventosPro.Services.Implementations
         {
             _logger.LogInformation("Starting decryption...");
 
-            using (Aes aes = Aes.Create())
+            try
             {
-                _logger.LogInformation("AES instance created.");
+                encryptedText = encryptedText.Trim();
 
+                // Converter a string Base64 para bytes
                 byte[] combinedData = Convert.FromBase64String(encryptedText);
 
-                byte[] iv = new byte[16]; 
+                if (combinedData.Length < 16)
+                {
+                    _logger.LogError("Encrypted data is too short to contain an IV.");
+                    throw new CryptographicException("Insufficient data for decryption (missing IV).");
+                }
+
+                // Extrair IV (primeiros 16 bytes)
+                byte[] iv = new byte[16];
                 Buffer.BlockCopy(combinedData, 0, iv, 0, iv.Length);
 
+                // Extrair o ciphertext (o restante dos bytes)
                 byte[] encryptedBytes = new byte[combinedData.Length - iv.Length];
                 Buffer.BlockCopy(combinedData, iv.Length, encryptedBytes, 0, encryptedBytes.Length);
 
-                aes.Key = _key;
-                aes.IV = iv;
-
-                using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
+                using (Aes aes = Aes.Create())
                 {
-                    _logger.LogInformation("Decryptor created.");
+                    aes.Key = _key;
+                    aes.IV = iv;
+                    aes.Padding = PaddingMode.PKCS7;
+                    aes.Mode = CipherMode.CBC;
 
-                    byte[] plainBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
-
-                    _logger.LogInformation("Decryption completed successfully.");
-                    return Encoding.UTF8.GetString(plainBytes);
+                    using (var decryptor = aes.CreateDecryptor(aes.Key, aes.IV))
+                    {
+                        _logger.LogInformation("Decryptor created.");
+                        byte[] plainBytes = decryptor.TransformFinalBlock(encryptedBytes, 0, encryptedBytes.Length);
+                        _logger.LogInformation("Decryption completed successfully.");
+                        return Encoding.UTF8.GetString(plainBytes);
+                    }
                 }
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error during decryption.");
+                throw;
             }
         }
 
+        /*
+        // Adicionar isso exatamente onde está 
+        public void CriptografiaDaSenha()
+        {
+            Console.Write("Digite a senha para criptografar: ");
+            string senhaOriginal = Console.ReadLine();
+
+            if (string.IsNullOrEmpty(senhaOriginal))
+            {
+                Console.WriteLine("A senha não pode ser nula ou vazia.");
+                return;
+            }
+
+            string senhaCriptografada = Encrypt(senhaOriginal);
+            Console.WriteLine($"Senha criptografada: {senhaCriptografada}");
+        }
+        // Adicione isso logo após a linha var builder = WebApplication.CreateBuilder(args);
+        using var loggerFactory = LoggerFactory.Create(builder => builder.AddConsole());
+        var logger = loggerFactory.CreateLogger<CryptographyService>();
+        var cryptoService = new CryptographyService(logger);
+        cryptoService.CriptografiaDaSenha();
+        */
     }
 }

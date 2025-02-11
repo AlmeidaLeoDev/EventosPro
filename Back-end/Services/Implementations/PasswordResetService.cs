@@ -8,7 +8,6 @@ namespace EventosPro.Services.Implementations
         private readonly IUserRepository _userRepository;
         private readonly IEmailService _emailService;
         private readonly IPasswordService _passwordService;
-        private readonly ICryptographyService _cryptographyService;
         private readonly ILogger<PasswordResetService> _logger;
         private readonly IJwtTokenService _jwtTokenService;
         private const int TOKEN_EXPIRATION_DAYS = 1;
@@ -18,7 +17,6 @@ namespace EventosPro.Services.Implementations
             _userRepository = userRepository;
             _emailService = emailService;
             _passwordService = passwordService;
-            _cryptographyService = cryptographyService;
             _logger = logger;
             _jwtTokenService = jwtTokenService;
         }

@@ -8,15 +8,13 @@ namespace EventosPro.Services.Implementations
     {
         private readonly IEventRepository _eventRepository;
         private readonly IEventInviteRepository _eventInviteRepository;
-        private readonly ILogger<EventService> _logger;
+        private readonly ILogger<EventService> _logger = default!;
 
-        public EventService(
-            IEventRepository eventRepository,
-            IEventInviteRepository eventInviteRepository,
-            IUserRepository userRepository)
+        public EventService(IEventRepository eventRepository, IEventInviteRepository eventInviteRepository, ILogger<EventService> logger)
         {
             _eventRepository = eventRepository;
             _eventInviteRepository = eventInviteRepository;
+            _logger = logger;
         }
 
         public async Task<Event> CreateEventAsync(Event eventEntity, int userId)

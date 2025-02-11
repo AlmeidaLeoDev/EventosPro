@@ -1,0 +1,11 @@
+version: "3"
+agent:
+  authtoken: 2riwrPAz7qb77IMdxgsHvNb24sW_6y8TN9sSGNdesWkuh3rvs
+tunnels:
+  CsharpBack:
+    addr:  https://localhost:7247  
+    proto: http
+    host_header: localhost
+  JavascriptFront:
+    addr:  5173  
+    proto: http

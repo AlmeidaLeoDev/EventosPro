@@ -82,3 +82,11 @@ export const LinkText = styled.p`
     }
   }
 `;
+
+export const ErrorMessage = styled.span`
+  display: block;
+  color: #dc3545;
+  font-size: 0.875rem;
+  margin-top: 5px;
+  text-align: left;
+`;

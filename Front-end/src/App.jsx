@@ -1,6 +1,7 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
 
+
 // Authentication containers
 import LoginPage from './containers/LoginPage';
 import RegisterPage from './containers/RegisterPage';

@@ -15,7 +15,7 @@ namespace EventosPro.Controllers
     /// </summary>
     [Route("api/[controller]")]
     [EnableCors("SecurePolicy")] // CORS policy
-    [RequireHttps] // Force HTTPS
+    //[RequireHttps] // Force HTTPS
     [Produces("application/json")]
     [EnableRateLimiting("fixed")]
     [ApiController]

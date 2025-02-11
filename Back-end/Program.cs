@@ -16,14 +16,21 @@ using Microsoft.AspNetCore.RateLimiting;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Quartz;
+using System.Net.Mail;
+using System.Net;
 using System.Text;
+using Microsoft.Extensions.Options;
+using EventosPro.Models;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.WebHost.UseUrls("https://0.0.0.0:7247");
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContex>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
+builder.Services.AddScoped<ICookieService, CookieService>();
 
 // Repositories
 builder.Services.AddScoped(typeof(IRepository<>), typeof(Repository<>));
@@ -39,7 +46,7 @@ builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IEmailService, EmailService>(); 
 builder.Services.AddScoped<IUserService, UserService>();
 builder.Services.AddScoped<IDatabaseCleanupService, DatabaseCleanupService>();
-builder.Services.AddScoped<IEventService, EventService>(); 
+builder.Services.AddScoped<IEventService, EventService>();
 
 // Validators
 builder.Services.AddScoped<IValidator<ChangePasswordViewModel>, ChangePasswordValidator>();
@@ -58,11 +65,14 @@ builder.Services.AddScoped<IValidator<EventListViewModel>, EventListValidator>()
 builder.Services.AddScoped<IValidator<RespondToInviteViewModel>, RespondToInviteValidator>();
 builder.Services.AddScoped<IValidator<UpdateEventViewModel>, UpdateEventValidator>();
 
+// Email
+builder.Configuration.AddEnvironmentVariables();
+builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
+builder.Services.AddSingleton(resolver =>
+    resolver.GetRequiredService<IOptions<EmailSettings>>().Value);
+
 // Mapping
 builder.Services.AddAutoMapper(typeof(MappingProfile));
-
-// --
-var app = builder.Build();
 
 // Quartz
 builder.Services.AddQuartz(q =>
@@ -72,7 +82,7 @@ builder.Services.AddQuartz(q =>
     q.AddTrigger(opts => opts
         .ForJob(cleanupJobKey)
         .WithIdentity("DatabaseCleanupTrigger")
-        .WithCronSchedule("0 */30 * ? * *")); // A cada 30 minutos
+        .WithCronSchedule("0 0/30 * * * ?")); // A cada 30 minutos
 
     q.UseSimpleTypeLoader();
     q.UseDefaultThreadPool(tp => tp.MaxConcurrency = 10);
@@ -87,13 +97,21 @@ builder.Services.AddQuartzHostedService(options =>
 // Cors
 builder.Services.AddCors(options =>
 {
-    options.AddPolicy("AllowReactApp", builder =>
-        builder.WithOrigins("https://35c4-2804-56c-a50e-f700-60be-aeae-8795-15c3.ngrok-free.app")
-               .AllowAnyMethod()
-               .AllowAnyHeader());
+    options.AddPolicy("SecurePolicy",
+        policy =>
+        {
+            policy
+                .WithOrigins(
+                    "https://9a12-2804-56c-a404-db00-c1bb-e456-128f-3239.ngrok-free.app",
+                    "https://*.ngrok-free.app"
+                )
+                .AllowAnyMethod()
+                .AllowAnyHeader()
+                .AllowCredentials()
+                .WithExposedHeaders("Content-Disposition")
+                .SetIsOriginAllowed(origin => true); // Permite qualquer origem durante desenvolvimento
+        });
 });
-
-app.UseCors("AllowReactApp");
 
 // Hsts
 builder.Services.AddHsts(options =>
@@ -141,7 +159,11 @@ builder.Services.AddAuthentication(options =>
     options.LogoutPath = "/Account/Logout";
     options.ExpireTimeSpan = TimeSpan.FromDays(30);
     options.SlidingExpiration = true;
+    options.Cookie.Domain = ".ngrok-free.app";
 });
+
+// --
+var app = builder.Build();
 
 // Configure the HTTP request pipeline.
 if (!app.Environment.IsDevelopment())
@@ -151,16 +173,18 @@ if (!app.Environment.IsDevelopment())
     app.UseHsts();
 }
 
-app.UseHttpsRedirection();
+//app.UseHttpsRedirection();
 app.UseStaticFiles();
 
 app.UseRouting();
+app.UseCors("SecurePolicy");
 
 // Middleware
-app.UseAuthorization();
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseMiddleware<SecurityHeadersMiddleware>();
 
+app.MapControllers();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
