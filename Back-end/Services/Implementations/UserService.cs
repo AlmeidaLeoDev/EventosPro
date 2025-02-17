@@ -84,6 +84,7 @@ namespace EventosPro.Services.Implementations
         {
             if (string.IsNullOrWhiteSpace(token))
             {
+                _logger.LogWarning("Tentativa de confirmar email com token vazio");
                 throw new ArgumentException("Token não pode estar vazio ou nulo.");
             }
 
@@ -91,12 +92,15 @@ namespace EventosPro.Services.Implementations
 
             try
             {
+                _logger.LogInformation("Iniciando validação do token para confirmação de email");
+
                 var (isValid, email) = _jwtTokenService.ValidateTokenAndGetEmail(token);
 
                 extractedEmail = email;
 
                 if (!isValid)
                 {
+                    _logger.LogWarning("Token inválido durante confirmação de email para: {Email}", extractedEmail);
                     throw new InvalidOperationException("Token de confirmação inválido ou expirado.");
                 }
 
@@ -104,6 +108,7 @@ namespace EventosPro.Services.Implementations
 
                 if (user == null)
                 {
+                    _logger.LogWarning("Usuário não encontrado durante confirmação: {Email}", extractedEmail);
                     throw new InvalidOperationException("Usuário não encontrado.");
                 }
 

@@ -17,7 +17,7 @@ namespace EventosPro.Repositories.Implementations
                 .Include(u => u.Events)
                 .Include(u => u.EventInvites)
                     .ThenInclude(ei => ei.Event)
-                .FirstOrDefaultAsync(u => u.Email == email && u.EmailConfirmed);
+                .FirstOrDefaultAsync(u => u.Email == email);
         }
 
         public async Task<bool> EmailExistsAsync(string email)
