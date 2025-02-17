@@ -50,38 +50,46 @@ namespace EventosPro.Services.Implementations
             return Task.FromResult(tokenString);
         }
 
-        public bool ValidateJwtToken(string token)
+        public (bool IsValid, string Email) ValidateTokenAndGetEmail(string token)
         {
             if (string.IsNullOrEmpty(token))
             {
                 _logger.LogWarning("Token is null or empty.");
-                return false;
+                return (false, string.Empty);
             }
 
-            _logger.LogInformation("Validating JWT token...");
-
-            var tokenHandler = new JwtSecurityTokenHandler(); 
+            _logger.LogInformation("Validating JWT token and extracting email...");
+            var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:SecretKey"]);
 
             try
             {
-                tokenHandler.ValidateToken(token, new TokenValidationParameters
+                // Valida o token e obtém os claims
+                var principal = tokenHandler.ValidateToken(token, new TokenValidationParameters
                 {
-                    ValidateIssuerSigningKey = true, 
-                    IssuerSigningKey = new SymmetricSecurityKey(key), 
-                    ValidateIssuer = false, 
-                    ValidateAudience = false, 
-                    ClockSkew = TimeSpan.Zero 
-                },
-                    out SecurityToken validatedToken);
+                    ValidateIssuerSigningKey = true,
+                    IssuerSigningKey = new SymmetricSecurityKey(key),
+                    ValidateIssuer = false,
+                    ValidateAudience = false,
+                    ClockSkew = TimeSpan.Zero
+                }, out SecurityToken validatedToken);
 
-                _logger.LogInformation("JWT token is valid.");
-                return true; 
+                // Extrai o email dos claims
+                var email = principal.FindFirst(ClaimTypes.Email)?.Value;
+
+                if (string.IsNullOrEmpty(email))
+                {
+                    _logger.LogWarning("Token is valid but doesn't contain email claim.");
+                    return (false, string.Empty);
+                }
+
+                _logger.LogInformation("JWT token is valid and email was extracted successfully.");
+                return (true, email);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 _logger.LogError(ex, "JWT token validation failed.");
-                return false;
+                return (false, string.Empty);
             }
         }
 

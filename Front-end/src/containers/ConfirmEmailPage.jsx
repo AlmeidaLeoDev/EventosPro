@@ -12,11 +12,10 @@ function ConfirmEmailPage() {
 
   const searchParams = new URLSearchParams(location.search);
   const token = searchParams.get('token');
-  const email = searchParams.get('email');
 
-  const confirmEmail = useCallback(async (token, email) => {
+  const confirmEmail = useCallback(async (token) => {
     try {
-      await api.post('/users/confirm-email', { email, token });
+      await api.post('/users/confirm-email', { token });
       setStatus('Email confirmado com sucesso!');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {
@@ -26,10 +25,10 @@ function ConfirmEmailPage() {
   }, [navigate]);
 
   useEffect(() => {
-    if (token && email) {
-      confirmEmail(token, email);
+    if (token) {
+      confirmEmail(token);
     }
-  }, [token, email, confirmEmail]);
+  }, [token, confirmEmail]);
 
   return (
     <Container>

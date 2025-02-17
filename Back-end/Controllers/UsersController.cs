@@ -240,7 +240,7 @@ namespace EventosPro.Controllers
                 if (!ModelState.IsValid)
                     return BadRequest(ModelState);
 
-                await _userService.ConfirmEmailAsync(model.Email, model.Token);
+                await _userService.ConfirmEmailAsync(model.Token);
                 return Ok(new { message = "Email confirmed successfully." });
             }
             catch (InvalidOperationException ex)

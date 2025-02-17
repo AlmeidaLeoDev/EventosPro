@@ -80,25 +80,34 @@ namespace EventosPro.Services.Implementations
             }
         }
 
-        public async Task ConfirmEmailAsync(string email, string token)
+        public async Task ConfirmEmailAsync(string token)
         {
-            if (string.IsNullOrWhiteSpace(email) || string.IsNullOrWhiteSpace(token))
+            if (string.IsNullOrWhiteSpace(token))
             {
-                throw new ArgumentException("Email or token cannot be empty or null.");
+                throw new ArgumentException("Token não pode estar vazio ou nulo.");
             }
+
+            string extractedEmail = string.Empty; 
 
             try
             {
-                var user = await _userRepository.GetByEmailAsync(email);
+                var (isValid, email) = _jwtTokenService.ValidateTokenAndGetEmail(token);
 
-                if (user.IsConfirmed)
+                extractedEmail = email;
+
+                if (!isValid)
                 {
-                    _logger.LogInformation("Email already confirmed for user {Email}", email);
-                    return;
+                    throw new InvalidOperationException("Token de confirmação inválido ou expirado.");
                 }
 
-                if (!_jwtTokenService.ValidateJwtToken(token) ||
-                     _jwtTokenService.IsTokenExpired(user.EmailConfirmationTokenExpires ?? DateTime.MinValue))
+                var user = await _userRepository.GetByEmailAsync(extractedEmail);
+
+                if (user == null)
+                {
+                    throw new InvalidOperationException("Usuário não encontrado.");
+                }
+
+                if (_jwtTokenService.IsTokenExpired(user.EmailConfirmationTokenExpires ?? DateTime.MinValue))
                 {
                     throw new InvalidOperationException("Invalid or expired confirmation token.");
                 }
@@ -112,7 +121,7 @@ namespace EventosPro.Services.Implementations
             }
             catch (Exception ex) when (ex is not InvalidOperationException)
             {
-                _logger.LogError(ex, "Error confirming email {Email}", email);
+                _logger.LogError(ex, "Error confirming email {Email}", extractedEmail);
                 throw;
             }
         }
