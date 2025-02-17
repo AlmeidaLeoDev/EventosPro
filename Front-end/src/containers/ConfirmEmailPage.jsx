@@ -15,7 +15,7 @@ function ConfirmEmailPage() {
 
   const confirmEmail = useCallback(async (token) => {
     try {
-      await api.post('/users/confirm-email', { token });
+      await api.post('/api/users/confirm-email', { token });
       setStatus('Email confirmado com sucesso!');
       setTimeout(() => navigate('/login'), 2000);
     } catch (error) {

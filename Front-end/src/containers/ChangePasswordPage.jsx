@@ -10,7 +10,7 @@ function ChangePasswordPage() {
   const handleChangePassword = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/users/change-password', { currentPassword, newPassword, confirmNewPassword });
+      await api.post('/api/users/change-password', { currentPassword, newPassword, confirmNewPassword });
       alert('Senha alterada com sucesso!');
     } catch (error) {
       console.error('Error changing password:', error.response?.data || error.message);

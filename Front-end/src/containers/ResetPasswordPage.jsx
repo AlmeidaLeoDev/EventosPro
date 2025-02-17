@@ -22,7 +22,7 @@ function ResetPasswordPage() {
   const handleResetPassword = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/users/reset-password', { email, token, newPassword, confirmNewPassword });
+      await api.post('/api/users/reset-password', { email, token, newPassword, confirmNewPassword });
       alert('Senha redefinida com sucesso!');
       navigate('/login');
     } catch (error) {

@@ -25,7 +25,7 @@ function EditEventPage() {
 
   const handleUpdateEvent = async (formData) => {
     try {
-      await api.put(`/events/update-event`, { id, ...formData });
+      await api.put(`/api/events/update-event`, { id, ...formData });
       navigate('/');
     } catch (error) {
       console.error('Error updating event:', error);

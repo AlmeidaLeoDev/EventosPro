@@ -7,7 +7,7 @@ function ForgotPasswordPage() {
   const handleForgotPassword = async (e) => {
     e.preventDefault();
     try {
-      await api.post('/users/forgot-password', { email });
+      await api.post('/api/users/forgot-password', { email });
       alert('Se o email existir, você receberá instruções para resetar sua senha.');
     } catch (error) {
       console.error('Error forgot password:', error.response?.data || error.message);

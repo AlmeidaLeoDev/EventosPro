@@ -24,7 +24,7 @@ function LoginPage() {
   const handleLogin = async (e) => {
     e.preventDefault();
     try {
-      const response = await api.post('/users/login', { email, password, rememberMe: true });
+      const response = await api.post('/api/users/login', { email, password, rememberMe: true });
       login(response.data);
       navigate('/');
     } catch (error) {

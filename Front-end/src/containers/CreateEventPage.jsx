@@ -15,7 +15,7 @@ function CreateEventPage() {
   
   const handleCreateEvent = async (formData) => {
     try {
-      await api.post('/events', formData);
+      await api.post('/api/events', formData);
       navigate('/');
     } catch (error) {
       console.error('Error creating event:', error);
