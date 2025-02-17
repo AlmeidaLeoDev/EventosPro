@@ -72,7 +72,7 @@ namespace EventosPro.Controllers
                 };
 
                 await _userService.AddUserAsync(user, model.Password);
-                await _emailService.SendEmailConfirmationAsync(user.Email, user.ConfirmationToken, user.Name, "");
+                await _emailService.SendEmailConfirmationAsync(user.Email, user.ConfirmationToken, user.Name);
 
                 return Ok(new { message = "Registration completed successfully. Please check your email to confirm your account." });
             }
@@ -82,7 +82,10 @@ namespace EventosPro.Controllers
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "User registration error");
+                _logger.LogError(ex, "User registration error: {Message}, StackTrace: {StackTrace}",
+                    ex.Message,
+                    ex.StackTrace);
+
                 return StatusCode(500, "An error occurred while processing your registration.");
             }
         }

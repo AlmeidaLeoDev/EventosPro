@@ -401,3 +401,4 @@ FodyWeavers.xsd
 
 # Ignore configuration files that contain sensitive information
 appsettings.Development.json
+ClientSecretGoogle.json

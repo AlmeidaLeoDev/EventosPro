@@ -21,13 +21,20 @@ using System.Net;
 using System.Text;
 using Microsoft.Extensions.Options;
 using EventosPro.Models;
+using Google.Apis.Auth.OAuth2;
+using Google.Apis.Gmail.v1;
+using Google.Apis.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
+// --- Configuração de appsettings e ambiente ---
+builder.Configuration.AddJsonFile("appsettings.Development.json", optional: false, reloadOnChange: true)
+                     .AddEnvironmentVariables();
+
+// WebHost
 builder.WebHost.UseUrls("https://0.0.0.0:7247");
 
 // Add services to the container.
-builder.Services.AddControllersWithViews();
 builder.Services.AddControllers();
 builder.Services.AddDbContext<ApplicationDbContex>(options => options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddScoped<ICookieService, CookieService>();
@@ -65,11 +72,17 @@ builder.Services.AddScoped<IValidator<EventListViewModel>, EventListValidator>()
 builder.Services.AddScoped<IValidator<RespondToInviteViewModel>, RespondToInviteValidator>();
 builder.Services.AddScoped<IValidator<UpdateEventViewModel>, UpdateEventValidator>();
 
-// Email
 builder.Configuration.AddEnvironmentVariables();
-builder.Services.Configure<EmailSettings>(builder.Configuration.GetSection("EmailSettings"));
-builder.Services.AddSingleton(resolver =>
-    resolver.GetRequiredService<IOptions<EmailSettings>>().Value);
+
+// Gmail - OAuth
+builder.Services.AddSingleton<GmailAuthenticator>();
+builder.Services.AddScoped<IGmailService, GmailApiService>();
+
+builder.Services.AddScoped<GmailService>(provider =>
+{
+    var authenticator = provider.GetRequiredService<GmailAuthenticator>();
+    return authenticator.AuthenticateAsync().GetAwaiter().GetResult();
+});
 
 // Mapping
 builder.Services.AddAutoMapper(typeof(MappingProfile));
@@ -163,6 +176,7 @@ builder.Services.AddAuthentication(options =>
 });
 
 // --
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
