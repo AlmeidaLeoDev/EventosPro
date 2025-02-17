@@ -73,22 +73,36 @@ namespace EventosPro.Services.Implementations
             }
         }
 
-        public async Task<bool> ValidateResetTokenAsync(string email, string token)
+        public async Task<bool> ValidateResetTokenAsync(string token)
         {
             try
             {
-                var user = await _userRepository.GetByEmailAsync(email);
-                if (user == null)
+                var (isValid, email) = _jwtTokenService.ValidateTokenAndGetEmail(token);
+
+                if (!isValid)
                 {
+                    _logger.LogWarning("Token inválido durante validação de reset de senha");
                     return false;
                 }
 
-                return _jwtTokenService.ValidateJwtToken(token) &&
-                       !_jwtTokenService.IsTokenExpired(user.PasswordResetTokenExpires ?? DateTime.MinValue);
+                var user = await _userRepository.GetByEmailAsync(email);
+                if (user == null)
+                {
+                    _logger.LogWarning("Usuário não encontrado durante validação de reset de senha");
+                    return false;
+                }
+
+                if (_jwtTokenService.IsTokenExpired(user.PasswordResetTokenExpires ?? DateTime.MinValue))
+                {
+                    _logger.LogWarning("Token de reset de senha expirado para o usuário {Email}", email);
+                    return false;
+                }
+
+                return true;
             }
             catch (Exception ex)
             {
-                _logger.LogError(ex, "Error validating reset token for {Email}", email);
+                _logger.LogError(ex, "Erro ao validar token de reset de senha");
                 throw;
             }
         }
@@ -103,7 +117,7 @@ namespace EventosPro.Services.Implementations
                     throw new InvalidOperationException("User not found.");
                 }
 
-                if (!await ValidateResetTokenAsync(email, token))
+                if (!await ValidateResetTokenAsync(token))
                 {
                     throw new InvalidOperationException("Invalid or expired token.");
                 }
