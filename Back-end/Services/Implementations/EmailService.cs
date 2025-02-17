@@ -15,7 +15,7 @@ namespace EventosPro.Services.Implementations
             IGmailService gmailService,
             ILogger<EmailService> logger,
             IJwtTokenService jwtTokenService,
-            IConfiguration configuration) 
+            IConfiguration configuration)
         {
             _gmailService = gmailService;
             _logger = logger;
@@ -79,6 +79,11 @@ namespace EventosPro.Services.Implementations
         {
             // In a real app, this would load from a template file
             var template = $@"
+        <html>
+            <head>
+                <meta charset='UTF-8'>
+            </head>
+            <body>
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                     <h1>Olá, {name}</h1>
                     <p>Obrigado por se registrar no EventosPro!</p>
@@ -86,7 +91,10 @@ namespace EventosPro.Services.Implementations
                     <p><a href='{confirmationLink}' style='background-color: #4CAF50; color: white; padding: 14px 20px; text-decoration: none; border-radius: 4px;'>Confirmar Email</a></p>
                     <p>Este link expirará em {expirationDays} dias.</p>
                     <p>Se você não solicitou este registro, ignore este email.</p>
-                </div>";
+                </div>
+            </body>
+        </html>";
+
 
             return Task.FromResult(template);
         }
@@ -94,6 +102,12 @@ namespace EventosPro.Services.Implementations
         private Task<string> BuildEventInviteTemplate(string userName, string eventDescription, DateTime startTime)
         {
             var template = $@"
+
+        <html>
+            <head>
+                <meta charset='UTF-8'>
+            </head>
+            <body>
                 <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                     <h2>Olá {userName},</h2>
                     <p>Você foi convidado para o seguinte evento:</p>
@@ -102,7 +116,9 @@ namespace EventosPro.Services.Implementations
                         <p>Data e hora: {startTime:dd/MM/yyyy HH:mm}</p>
                     </div>
                     <p>Por favor, faça login na sua conta para responder a este convite.</p>
-                </div>";
+                </div>;
+            </body>
+        </html>";
 
             return Task.FromResult(template);
         }
