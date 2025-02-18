@@ -1,5 +1,6 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { Navigate } from 'react-router-dom';
+import ProtectedRoute from './components/ProtectedRoute'
 
 
 // Authentication containers
@@ -33,18 +34,18 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/register" element={<RegisterPage />} />
         <Route path="/confirm-email" element={<ConfirmEmailPage />} />
-        <Route path="/forgot-password" element={<ForgotPasswordPage />} />
+        <Route path="/forgot-password" element={<ForgotPasswordPage/>} />
         <Route path="/reset-password" element={<ResetPasswordPage />} />
-        <Route path="/change-password" element={<ChangePasswordPage />} />
+        <Route path="/change-password" element={<ProtectedRoute><ChangePasswordPage /></ProtectedRoute>} />
 
         {/* Events routes */}
-        <Route path="/home" element={<HomePage />} />
-        <Route path="/create-event" element={<CreateEventPage />} />
-        <Route path="/update-event/:id" element={<EditEventPage />} />
+        <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
+        <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
+        <Route path="/update-event/:id" element={<ProtectedRoute><EditEventPage /></ProtectedRoute>} />
 
         {/* Invites routes */}
-        <Route path="/invite" element={<InvitePage />} />
-        <Route path="/invite-respond" element={<InviteRespondPage />} />
+        <Route path="/invite" element={<ProtectedRoute><InvitePage /></ProtectedRoute>} />
+        <Route path="/invite-respond" element={<ProtectedRoute><InviteRespondPage /></ProtectedRoute>} />
       </Routes>
     </Router>
   );

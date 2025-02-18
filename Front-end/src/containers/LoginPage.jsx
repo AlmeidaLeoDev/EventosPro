@@ -25,8 +25,9 @@ function LoginPage() {
     e.preventDefault();
     try {
       const response = await api.post('/api/users/login', { email, password, rememberMe: true });
+      localStorage.setItem('authToken', response.data.token);
       login(response.data);
-      navigate('/');
+      navigate('/home');
     } catch (error) {
       console.error('Login error:', error.response?.data || error.message);
       alert('Falha ao realizar login.');
