@@ -1,4 +1,5 @@
-﻿using EventosPro.Repositories.Interfaces;
+﻿using EventosPro.Models;
+using EventosPro.Repositories.Interfaces;
 using EventosPro.Services.Interfaces;
 using Microsoft.Extensions.Configuration;
 
@@ -41,9 +42,9 @@ namespace EventosPro.Services.Implementations
                     return;
                 }
 
-                var token = _jwtTokenService.GenerateJwtTokenAsync(user);
+                var token = await _jwtTokenService.GenerateJwtTokenAsync(user);
 
-                user.PasswordResetToken = await token;
+                user.PasswordResetToken = token;
                 user.PasswordResetTokenExpires = _jwtTokenService.GetExpirationTime();
 
                 await _userRepository.UpdateAsync(user);
@@ -89,6 +90,12 @@ namespace EventosPro.Services.Implementations
                 if (user == null)
                 {
                     _logger.LogWarning("Usuário não encontrado durante validação de reset de senha");
+                    return false;
+                }
+
+                if (user.PasswordResetToken != token)
+                {
+                    _logger.LogWarning("Token de reset não corresponde ao token armazenado");
                     return false;
                 }
 
