@@ -42,6 +42,11 @@ function App() {
         <Route path="/home" element={<ProtectedRoute><HomePage /></ProtectedRoute>} />
         <Route path="/create-event" element={<ProtectedRoute><CreateEventPage /></ProtectedRoute>} />
         <Route path="/update-event/:id" element={<ProtectedRoute><EditEventPage /></ProtectedRoute>} />
+        <Route path="/edit-event/:id" element={ // Corrigido o nome do parâmetro
+          <ProtectedRoute>
+            <EditEventPage />
+          </ProtectedRoute>
+        } />
 
         {/* Invites routes */}
         <Route path="/invite" element={<ProtectedRoute><InvitePage /></ProtectedRoute>} />

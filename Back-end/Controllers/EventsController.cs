@@ -199,7 +199,7 @@ namespace EventosPro.Controllers
         /// <response code="400">If the model state is invalid or the event data is invalid.</response>
         /// <response code="409">If there is a conflict with existing data.</response>
         /// <response code="500">If an error occurs during the update process.</response>
-        [HttpPut("update-event")]
+        [HttpPut("update-event/{id}")]
         [ProducesResponseType(StatusCodes.Status200OK, Type = typeof(EventDetailsViewModel))]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         [ProducesResponseType(StatusCodes.Status409Conflict)]

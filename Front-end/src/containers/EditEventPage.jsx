@@ -1,64 +1,124 @@
-import { useState, useEffect, useCallback } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import EventForm from '../components/EventFormStyles';
+import { useState, useEffect } from 'react';
+import { useNavigate, useParams } from 'react-router-dom';
 import api from '../services/api';
+import { Container, StyledHeading, FormContainer, FormActions } from '../components/EditEventStyles';
 
 function EditEventPage() {
   const { id } = useParams();
   const navigate = useNavigate();
-  const [eventData, setEventData] = useState(null);
-
-  const fetchEvent = useCallback(async () => {
-    try {
-      const response = await api.get(`/events/${id}`);
-      setEventData(response.data);
-    } catch (error) {
-      console.error('Error when searching for event:', error);
-      alert('Evento não encontrado');
-      navigate('/');
-    }
-  }, [id, navigate]);
+  const [formData, setFormData] = useState({
+    description: '',
+    startTime: '',
+    endTime: ''
+  });
 
   useEffect(() => {
+    const fetchEvent = async () => {
+      try {
+        const response = await api.get(`/api/events/${id}`);
+        const event = response.data;
+        
+        // Corrigir a formatação das datas para datetime-local
+        const adjustDateForInput = (dateString) => {
+          const date = new Date(dateString);
+          return new Date(date.getTime() - date.getTimezoneOffset() * 60000)
+            .toISOString()
+            .slice(0, 16);
+        };
+  
+        setFormData({
+          description: event.description,
+          startTime: adjustDateForInput(event.startTime),
+          endTime: adjustDateForInput(event.endTime)
+        });
+      } catch (error) {
+        console.error('Erro ao carregar:', error);
+      }
+    };
     fetchEvent();
-  }, [fetchEvent]);
+  }, [id]);
 
-  const handleUpdateEvent = async (formData) => {
+  const handleSubmit = async (e) => {
+    e.preventDefault();
     try {
-      await api.put(`/api/events/update-event`, { id, ...formData });
-      navigate('/');
+      const payload = {
+        Id: parseInt(id),
+        Description: formData.description,
+        StartTime: new Date(formData.startTime).toISOString(),
+        EndTime: new Date(formData.endTime).toISOString()
+      };
+  
+      console.log('Payload enviado:', payload); // Adicione este log
+  
+      const response = await api.put(`/api/events/update-event/${id}`, payload);
+      console.log('Resposta da API:', response.data); // Log da resposta
+      
+      navigate('/home', { state: { refresh: true } });
     } catch (error) {
-      console.error('Error updating event:', error);
-      alert('Erro ao atualizar evento');
+      console.error('Erro completo:', error); // Log completo do erro
+      console.log('Resposta do servidor:', error.response); // Detalhes da resposta
+      alert(error.response?.data?.message || 'Erro ao atualizar evento');
     }
   };
 
-  const handleDeleteEvent = async () => {
-    if (window.confirm('Tem certeza que deseja excluir este evento?')) {
+  const handleDelete = async () => {
+    const confirmDelete = window.confirm('Excluir este evento permanentemente?');
+    if (confirmDelete) {
       try {
-        await api.delete(`/events/delete-event`);
-        navigate('/');
+        await api.delete(`/api/events/delete-event?id=${id}`);
+        navigate('/home');
       } catch (error) {
-        console.error('Error deleting event:', error);
-        alert('Erro ao excluir evento');
+        console.error('Erro ao excluir:', error);
       }
     }
   };
 
   return (
-    <div className="container">
-      <h2>Detalhes do Evento</h2>
-      {eventData ? (
-        <>
-          <EventForm initialData={eventData} onSubmit={handleUpdateEvent} />
-          <button onClick={handleDeleteEvent} className="delete-btn">
+    <Container>
+      <StyledHeading>Editar Evento</StyledHeading>
+      
+      <FormContainer onSubmit={handleSubmit}>
+        <label>
+          Descrição:
+          <input
+            type="text"
+            value={formData.description}
+            onChange={(e) => setFormData({ ...formData, description: e.target.value })}
+            required
+          />
+        </label>
+        
+        <label>
+          Data/Hora Início:
+          <input
+            type="datetime-local"
+            value={formData.startTime}
+            onChange={(e) => setFormData({ ...formData, startTime: e.target.value })}
+            required
+          />
+        </label>
+        
+        <label>
+          Data/Hora Fim:
+          <input
+            type="datetime-local"
+            value={formData.endTime}
+            onChange={(e) => setFormData({ ...formData, endTime: e.target.value })}
+            required
+          />
+        </label>
+        
+        <FormActions>
+          <button type="submit">Salvar Alterações</button>
+          <button type="button" onClick={handleDelete} className="danger">
             Excluir Evento
           </button>
-        </>
-      ) : (
-        <p>Carregando...</p>
-      )}
-    </div>
+          <button type="button" onClick={() => navigate('/home')}>
+            Cancelar
+          </button>
+        </FormActions>
+      </FormContainer>
+    </Container>
   );
 }
 

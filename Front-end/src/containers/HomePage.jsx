@@ -10,11 +10,16 @@ import {
   Title,
   LogoutButton,
   CalendarWrapper,
-  CreateEventButton
+  CreateEventButton,
+  ModalOverlay,
+  ModalContent,
+  ModalActions
 } from '../components/HomeStyles';
 
 function HomePage() {
   const [events, setEvents] = useState([]);
+  const [selectedEvent, setSelectedEvent] = useState(null);
+  const [showActionModal, setShowActionModal] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
 
@@ -50,6 +55,31 @@ function HomePage() {
     }
   }, [location.state]); // Recarrega quando o estado muda
 
+  const handleEventClick = (info) => {
+    setSelectedEvent(info.event);
+    setShowActionModal(true);
+  };
+
+  const handleDelete = async () => {
+    try {
+      await api.delete(`/api/events/delete-event?id=${selectedEvent.id}`);
+      
+      // Atualização imediata do estado local
+      setEvents(prevEvents => prevEvents.filter(event => event.id !== selectedEvent.id));
+      
+      // Fechar modal e resetar seleção
+      setShowActionModal(false);
+      setSelectedEvent(null);
+  
+      // Forçar recarga adicional para garantir sincronização
+      await fetchEvents(); 
+  
+    } catch (error) {
+      console.error('Erro ao excluir:', error.response?.data);
+      alert('Falha ao excluir evento');
+    }
+  };
+
   return (
     <Container>
       <Header>
@@ -69,7 +99,7 @@ function HomePage() {
           plugins={[dayGridPlugin, interactionPlugin]}
           initialView="dayGridMonth"
           events={events}
-          eventClick={(info) => navigate(`/edit-event/${info.event.id}`)}
+          eventClick={handleEventClick}
           height="auto"
           headerToolbar={{
             start: 'title',
@@ -84,6 +114,26 @@ function HomePage() {
           }}
         />
       </CalendarWrapper>
+
+      {showActionModal && (
+        <ModalOverlay>
+          <ModalContent>
+            <h3>{selectedEvent.title}</h3>
+            <p>O que deseja fazer com este evento?</p>
+            <ModalActions>
+              <button onClick={() => navigate(`/edit-event/${selectedEvent.id}`)}>
+                Editar
+              </button>
+              <button onClick={handleDelete} className="danger">
+                Excluir
+              </button>
+              <button onClick={() => setShowActionModal(false)}>
+                Cancelar
+              </button>
+            </ModalActions>
+          </ModalContent>
+        </ModalOverlay>
+      )}
     </Container>
   );
 }
