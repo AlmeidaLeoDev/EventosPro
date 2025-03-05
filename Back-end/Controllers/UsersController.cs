@@ -1,4 +1,5 @@
 ﻿using EventosPro.Models;
+using EventosPro.Services.Implementations;
 using EventosPro.Services.Interfaces;
 using EventosPro.ViewModels.Users;
 using Microsoft.AspNetCore.Authorization;
@@ -27,8 +28,9 @@ namespace EventosPro.Controllers
         private readonly IPasswordService _passwordService;
         private readonly IPasswordResetService _passwordResetService;
         private readonly ILogger<UsersController> _logger;
+        private readonly IJwtTokenService _jwtTokenService;
 
-        public UsersController(IUserService userService, ICookieService cookieService, IEmailService emailService, IPasswordService passwordService, IPasswordResetService passwordResetService, ILogger<UsersController> logger)
+        public UsersController(IUserService userService, ICookieService cookieService, IEmailService emailService, IPasswordService passwordService, IPasswordResetService passwordResetService, ILogger<UsersController> logger, IJwtTokenService jwtTokenService)
         {
             _userService = userService;
             _cookieService = cookieService;
@@ -36,6 +38,7 @@ namespace EventosPro.Controllers
             _passwordService = passwordService;
             _passwordResetService = passwordResetService;
             _logger = logger;
+            _jwtTokenService = jwtTokenService;
         }
 
         /// <summary>
@@ -123,7 +126,18 @@ namespace EventosPro.Controllers
 
                 await _cookieService.SignInWithCookieAsync(user, model.RememberMe);
 
-                return Ok(new { message = "Login successfully." });
+                if (!user.IsConfirmed)
+                    return BadRequest("Please confirm your email before logging in.");
+
+                // Gere o token JWT
+                var token = await _jwtTokenService.GenerateJwtTokenAsync(user);
+
+                // Retorne o token junto com a resposta
+                return Ok(new
+                {
+                    message = "Login successfully.",
+                    token = token // Adicione esta linha
+                });
             }
             catch (Exception ex)
             {

@@ -8,7 +8,7 @@ export default defineConfig({
     port: 5173,
     strictPort: true,
     cors: true,
-    allowedHosts: ["baf1-2804-56c-a56d-8600-5ce4-b558-312d-70e6.ngrok-free.app", 
+    allowedHosts: ["b3ba-2804-56c-a41a-f300-5429-a608-5b71-574e.ngrok-free.app", 
     ],
     proxy: {
       // Todas as chamadas para /api serão redirecionadas para o back-end
