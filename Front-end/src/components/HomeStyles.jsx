@@ -1,5 +1,79 @@
 import styled from 'styled-components';
 
+export const Header = styled.div`
+  position: relative;
+  height: 80px;
+  margin-bottom: 30px;
+  padding: 0 30px;
+  background: #000000;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 20px;
+
+  @media (max-width: 1024px) {
+    padding: 0 20px;
+    gap: 15px;
+  }
+
+  @media (max-width: 768px) {
+    height: auto;
+    min-height: 70px;
+    padding: 10px 15px;
+    grid-template-columns: 1fr auto;
+    grid-template-areas: 
+      "logo logout"
+      "title title";
+  }
+`;
+
+export const Logo = styled.img`
+  height: auto;
+  width: 60px;
+  max-width: 180px;
+  object-fit: contain;
+  
+  @media (max-width: 768px) {
+    grid-area: logo;
+    width: 45px;
+    max-width: 140px;
+  }
+
+  @media (max-width: 480px) {
+    height: 50px;
+    max-width: 120px;
+  }
+`;
+
+export const Title = styled.h1`
+  color: white;
+  font-size: 28px;
+  margin: 0;
+  text-align: center;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 20px;
+
+  @media (max-width: 1024px) {
+    font-size: 24px;
+  }
+
+  @media (max-width: 768px) {
+    grid-area: title;
+    font-size: 20px;
+    padding: 10px 0 0;
+    white-space: normal;
+    text-align: left;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 18px;
+    line-height: 1.3;
+  }
+`;
+
+
 export const ModalOverlay = styled.div`
   position: fixed;
   top: 0;
@@ -78,21 +152,6 @@ export const Container = styled.div`
   }
   `;
 
-export const Header = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-  padding: 20px 0;
-  border-bottom: 1px solid #eee;
-`;
-
-export const Title = styled.h1`
-  color: #333;
-  font-size: 28px;
-  margin: 0;
-`;
-
 export const PrimaryButton = styled.button`
   background-color: #007bff;
   color: white;
@@ -109,10 +168,15 @@ export const PrimaryButton = styled.button`
 `;
 
 export const LogoutButton = styled(PrimaryButton)`
-  background-color: #dc3545;
+  @media (max-width: 768px) {
+    grid-area: logout;
+    padding: 8px 12px;
+    font-size: 14px;
+  }
 
-  &:hover {
-    background-color: #bb2d3b;
+  @media (max-width: 480px) {
+    padding: 6px 10px;
+    font-size: 12px;
   }
 `;
 

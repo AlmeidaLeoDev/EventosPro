@@ -3,10 +3,12 @@ import { useNavigate, useLocation } from 'react-router-dom';
 import FullCalendar from '@fullcalendar/react';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
+import logo from '../assets/logo.png';
 import api from '../services/api';
 import {
   Container,
   Header,
+  Logo,
   Title,
   LogoutButton,
   CalendarWrapper,
@@ -83,6 +85,7 @@ function HomePage() {
   return (
     <Container>
       <Header>
+        <Logo src={logo} alt="EventosPro" />
         <Title>Meu Calendário de Eventos</Title>
         <LogoutButton onClick={() => {
           localStorage.removeItem("authToken");
