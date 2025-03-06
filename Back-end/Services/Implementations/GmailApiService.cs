@@ -30,7 +30,7 @@ public class GmailApiService : IGmailService, IDisposable
             mimeMessage.Subject = subject;
             mimeMessage.Body = new TextPart("html") { Text = htmlBody }; 
 
-            var rawMessage = Base64UrlEncode(mimeMessage.ToString());
+            var rawMessage = Base64UrlEncode(mimeMessage);
             var message = new Message { Raw = rawMessage };
 
             var request = _gmailService.Users.Messages.Send(message, "me");
@@ -46,14 +46,19 @@ public class GmailApiService : IGmailService, IDisposable
         }
     }
 
-    private static string Base64UrlEncode(string input)
+    private static string Base64UrlEncode(MimeMessage mimeMessage)
     {
-        var inputBytes = Encoding.UTF8.GetBytes(input);
-        return Convert.ToBase64String(inputBytes)
-            .Replace('+', '-')
-            .Replace('/', '_')
-            .TrimEnd('=');
+        using (var stream = new MemoryStream())
+        {
+            mimeMessage.WriteTo(stream);
+            var rawBytes = stream.ToArray();
+            return Convert.ToBase64String(rawBytes)
+                .Replace('+', '-')
+                .Replace('/', '_')
+                .TrimEnd('=');
+        }
     }
+
 
     public void Dispose()
     {

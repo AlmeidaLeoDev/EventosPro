@@ -79,21 +79,31 @@ namespace EventosPro.Services.Implementations
         {
             // In a real app, this would load from a template file
             var template = $@"
-        <html>
-            <head>
-                <meta charset='UTF-8'>
-            </head>
-            <body>
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
-                    <h1>Olá, {name}</h1>
-                    <p>Obrigado por se registrar no EventosPro!</p>
-                    <p>Por favor, confirme seu endereço de e - mail clicando no link abaixo:</p>
-                    <p><a href='{confirmationLink}' style='background-color: #4CAF50; color: white; padding: 14px 20px; text-decoration: none; border-radius: 4px;'>Confirmar Email</a></p>
+            <html>
+                <head>
+                    <meta charset='UTF-8'>
+                </head>
+                <body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;'>
+                    <h1 style='color: #007bff;'>Olá, {name}</h1>
+                    <p>Obrigado por se registrar no <strong>EventosPro</strong>!</p>
+                    <p>Por favor, confirme seu endereço de e-mail clicando no link abaixo:</p>
+
+                    <table role='presentation' border='0' cellspacing='0' cellpadding='0' width='100%'>
+                        <tr>
+                            <td align='center' style='padding: 20px 0;'>
+                                <a href='{confirmationLink}' 
+                                   style='background-color: #4CAF50; color: white; padding: 14px 20px; text-decoration: none; 
+                                          border-radius: 4px; display: inline-block; font-weight: bold;'>
+                                   Confirmar E-mail
+                                </a>
+                            </td>
+                        </tr>
+                    </table>
                     <p>Este link expirará em {expirationDays} dias.</p>
                     <p>Se você não solicitou este registro, ignore este email.</p>
                 </div>
-            </body>
-        </html>";
+                </body>
+            </html>";
 
 
             return Task.FromResult(template);
@@ -103,22 +113,20 @@ namespace EventosPro.Services.Implementations
         {
             var template = $@"
 
-        <html>
+            <html>
             <head>
                 <meta charset='UTF-8'>
             </head>
-            <body>
-                <div style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
-                    <h2>Olá {userName},</h2>
+            <body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto; color: #333;'>
+                    <h2 style='color: #007bff;'>Olá {userName},</h2>
                     <p>Você foi convidado para o seguinte evento:</p>
                     <div style='background-color: #f8f9fa; padding: 20px; border-radius: 4px;'>
-                        <h3>{eventDescription}</h3>
+                        <h3 style='margin-top: 0;'>{eventDescription}</h3>
                         <p>Data e hora: {startTime:dd/MM/yyyy HH:mm}</p>
                     </div>
                     <p>Por favor, faça login na sua conta para responder a este convite.</p>
-                </div>;
             </body>
-        </html>";
+            </html>";
 
             return Task.FromResult(template);
         }

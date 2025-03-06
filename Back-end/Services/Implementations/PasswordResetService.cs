@@ -51,17 +51,24 @@ namespace EventosPro.Services.Implementations
 
                 string resetLink = $"{_baseUrl.TrimEnd('/')}/reset-password?token={token}&email={Uri.EscapeDataString(email)}";
                 string emailBody = $@"
+                <html>
+                <head>
+                    <meta charset='UTF-8'>
+                </head>
+                <body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                     <h2>Redefinição de Senha - EventosPro</h2>
                     <p>Olá {user.Name},</p>
                     <p>Recebemos uma solicitação para redefinir sua senha no EventosPro.</p>
                     <p>Se você não solicitou esta alteração, ignore este e-mail.</p>
-                    <p>Para redefinir sua senha, clique no link abaixo (válido por {TOKEN_EXPIRATION_DAYS} dia):</p>
+                    <p>Para redefinir sua senha, clique no link abaixo (valido por {TOKEN_EXPIRATION_DAYS} dia):</p>
                     <p><a href='{resetLink}'>Redefinir Senha</a></p>
-                    <p>Por segurança, este link expirará em {TOKEN_EXPIRATION_DAYS} dia.</p>";
+                    <p>Por segurança, este link expirará em {TOKEN_EXPIRATION_DAYS} dia.</p>
+                </body>
+                </html > ";
 
                 await _gmailService.SendEmailAsync(
                     email,
-                    "Redefinição de Senha - EventosPro",
+                    "Redefinicao de Senha - EventosPro",
                     emailBody
                 );
 
@@ -140,13 +147,20 @@ namespace EventosPro.Services.Implementations
 
                 // Envia confirmação por email
                 string emailBody = @"
+                <html>
+                <head>
+                    <meta charset='UTF-8'>
+                </head>
+                <body style='font-family: Arial, sans-serif; max-width: 600px; margin: 0 auto;'>
                     <h2>Senha Alterada com Sucesso</h2>
                     <p>Sua senha foi alterada com sucesso no EventosPro.</p>
-                    <p>Se você não realizou esta alteração, entre em contato conosco imediatamente.</p>";
+                    <p>Se você não realizou esta alteração, entre em contato conosco imediatamente.</p>
+                </body>
+                </html> ";
 
                 await _gmailService.SendEmailAsync(
                     email,
-                    "Confirmação de Alteração de Senha - EventosPro",
+                    "Confirmacao de Alteracao de Senha - EventosPro",
                     emailBody
                 );
 
