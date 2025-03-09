@@ -252,7 +252,7 @@ Don't forget to give the project a star! Thanks again!
 <table>
   <tr>
     <td align="center">
-      <a href="#">
+      <a href="https://www.linkedin.com/in/almeidaleo-dev/" target="_blank">
         <img src="assets/profile/perfilLinkedin.jpeg" width="100px;" alt="Leonardo Almeida Profile Picture"/><br>
         <sub>
           <b>Leonardo Almeida</b>
