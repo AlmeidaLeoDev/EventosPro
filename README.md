@@ -24,11 +24,11 @@ _Read this in another language:_
   </div>
 
   <div align="center">
-    <a href=""><strong>Explore the docs »</strong></a>
+    <a href="#about-the-project"><strong>Explore the docs »</strong></a>
   
   <p>
     <br />
-    <a href="#about-the-project">View Demo</a>
+    <a href="#usage">View Demo</a>
     &middot;
     <a href="https://github.com/AlmeidaLeoDev/EventosPro/issues/new?labels=bug&template=bug-report.md">Report Bug</a>
     &middot;
@@ -276,4 +276,4 @@ Don't forget to give the project a star! Thanks again!
 
 ## Licença
 
-This project is under [MIT](LICENSE)
+This project is under [MIT](/LICENSE)
