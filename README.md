@@ -287,8 +287,8 @@ Don't forget to give the project a star! Thanks again!
 
 ## Credits
 
-This README was inspired by and developed based on the work of [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), created by [emargi - 
-Mohamad Reza] and on the work of [Readme-Templates](https://github.com/Fernanda-Kipper/Readme-Templates), created by [Fernanda-Kipper - 
+This README was inspired by and developed based on the work of [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), created by [othneildrew - 
+Othneil Drew] and on the work of [Readme-Templates](https://github.com/Fernanda-Kipper/Readme-Templates), created by [Fernanda-Kipper - 
 Fernanda Kipper
 ]
 
