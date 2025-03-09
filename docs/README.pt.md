@@ -125,8 +125,10 @@ Instruções sobre como você pode configurar seu projeto localmente.
 
 Abaixo você encontrará instruções sobre como instalar e configurar sua aplicação.
 
-**1. Clonar o repositório**
+**1. Clonar o repositório:**
+
 Abrir seu terminal e executar:
+
 ```bash
 git clone https://github.com/AlmeidaLeoDev/EventosPro
 ```
@@ -136,8 +138,10 @@ cd EventosPro
 ```
 <p></p>
 
-**2. Configurar o Back-End**
+**2. Configurar o Back-End:**
+
 Configurar variáveis de ambiente:
+
 Criar um arquivo (e.g., .env ou usar seu método favorito para configuração do ambiente) no diretório do back-end com as seguintes variáveis:
 - JWT_SECRET=your_jwt_secret_key
 - DB_CONNECTION_STRING=your_database_connection_string
@@ -148,7 +152,9 @@ Criar um arquivo (e.g., .env ou usar seu método favorito para configuração do
 <p></p>
 
 **3. Compilar e Executar o Back-End:**
+
 Navegue para a pasta back-end (se separada) e execute:
+
 ```bash
 dotnet build
 ```
@@ -157,8 +163,10 @@ dotnet run
 ```
 <p></p>
 
-**4. Configurar o Front-End**
+**4. Configurar o Front-End:**
+
 Navegar para o diretório front-end (normalmente denominado cliente ou similar):
+
 ```bash
 cd client
 npm install
@@ -167,8 +175,10 @@ Em seguida, instale os pacotes FullCalendar:
 ```bash
 npm install @fullcalendar/core @fullcalendar/daygrid
 ```
-Integre FullCalendar na sua aplicação by importando e configurando-o em seu React (ou outro JavaScript framework) component.
+Integre FullCalendar na sua aplicação importando e configurando-o em seu React (ou outro JavaScript framework) component.
+
 Executar o Front-End:
+
 Inicie o servidor de desenvolvimento:
 ```bash
 npm start
@@ -206,7 +216,7 @@ Demonstração de como o projeto pode ser usado
 
 **2. Se você já tem uma conta, você pode clicar em "Recuperar senha".**
 
-* Nesse caso, as instruções para mudança da sua senha vão ser enviadas par ao seu email.
+* Nesse caso, as instruções para mudança da sua senha vão ser enviadas para o seu email.
 
 <img src="../assets/screenshots/forgot-password.png" alt="Logo" width="800" height="auto">
 <p></p>
