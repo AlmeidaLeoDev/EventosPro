@@ -293,6 +293,10 @@ Fernanda Kipper
 
 Agradecemos pelo excelente conteúdo e pela contribuição para a comunidade open source!
 
+<br />
+
+
+
 ## Licença
 
 Este projeto está sob licença do [MIT](../LICENSE)
