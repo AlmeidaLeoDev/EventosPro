@@ -253,7 +253,7 @@ Don't forget to give the project a star! Thanks again!
   <tr>
     <td align="center">
       <a href="#">
-        <img src="" width="100px;" alt="Leonardo Almeida Profile Picture"/><br>
+        <img src="assets/profile/perfilLinkedin.jpeg" width="100px;" alt="Leonardo Almeida Profile Picture"/><br>
         <sub>
           <b>Leonardo Almeida</b>
         </sub>
