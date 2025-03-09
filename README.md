@@ -274,6 +274,6 @@ Don't forget to give the project a star! Thanks again!
 
 
 
-## Licença
+## License
 
 This project is under [MIT](/LICENSE)
