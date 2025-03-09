@@ -62,6 +62,7 @@ _Leia isto em outro idioma:_
         <li><a href="#principais-colaboradores">Principais colaboradores</a></li>
       </ul>
     </li>
+    <li><a href="#créditos">Créditos</a></li>
     <li><a href="#licença">Licença</a></li>
   </ol>
 </details>
@@ -282,6 +283,15 @@ Não se esqueça de dar uma estrela ao projeto! Obrigado novamente!
 <br />
 
 
+
+## Créditos
+
+Este README foi inspirado e desenvolvido com base no trabalho de [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), criado por [othneildrew - 
+Othneil Drew] e no trabalho de [Readme-Templates](https://github.com/Fernanda-Kipper/Readme-Templates), criado por [Fernanda-Kipper - 
+Fernanda Kipper
+]
+
+Agradecemos pelo excelente conteúdo e pela contribuição para a comunidade open source!
 
 ## Licença
 
