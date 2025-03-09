@@ -28,7 +28,7 @@ _Leia isto em outro idioma:_
   
   <p>
   <br />
-  <a href="">Ver demonstração</a>
+  <a href="#uso">Ver demonstração</a>
   &middot;
   <a href="https://github.com/AlmeidaLeoDev/EventosPro/issues/new?labels=bug&template=bug-report.md">Reportar Bug</a>
   &middot;
