@@ -127,7 +127,9 @@ Instructions on how you can set up your project locally.
 Below you will find instructions on how to install and configure your application.
 
 **1. Clone the Repository**
+
 Open your terminal and run:
+
 ```bash
 git clone https://github.com/AlmeidaLeoDev/EventosPro
 ```
@@ -138,7 +140,9 @@ cd EventosPro
 <p></p>
 
 **2. Configure the Back-End**
+
 Set Up Environment Variables:
+
 Create a file (e.g., .env or use your preferred method for environment configuration) in the back-end directory with the following variables:
 - JWT_SECRET=your_jwt_secret_key
 - DB_CONNECTION_STRING=your_database_connection_string
@@ -148,8 +152,10 @@ Create a file (e.g., .env or use your preferred method for environment configura
 - SMTP_PASS=your_smtp_password
 <p></p>
 
-**3. Build and Run the Back-End:**
+**3. Build and Run the Back-End**
+
 Navigate to the back-end folder (if separate) and run:
+
 ```bash
 dotnet build
 ```
@@ -159,7 +165,9 @@ dotnet run
 <p></p>
 
 **4. Configure the Front-End**
+
 Navigate to the front-end directory (typically named client or similar):
+
 ```bash
 cd client
 npm install
@@ -169,7 +177,9 @@ Then, install FullCalendar packages:
 npm install @fullcalendar/core @fullcalendar/daygrid
 ```
 Integrate FullCalendar in your application by importing and configuring it in your React (or other JavaScript framework) component.
+
 Run the Front-End:
+
 Start the development server:
 ```bash
 npm start
@@ -199,7 +209,7 @@ Demonstration of how the project can be used
 
 <img src="assets/screenshots/register.png" alt="Logo" width="800" height="auto">
 
-* The user fill in their details (name, email, password) and submit the form.
+* The user fill in your details (name, email, password) and submit the form.
 * A confirmation email is sent (via MailKit).
 * The user clicks the confirmation link to activate your account.
 * Now, you can log in using their credentials (JWT Authentication).
