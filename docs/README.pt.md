@@ -125,7 +125,7 @@ Instruções sobre como você pode configurar seu projeto localmente.
 
 Abaixo você encontrará instruções sobre como instalar e configurar sua aplicação.
 
-**1. Clonar o repositório:**
+**1. Clonar o repositório**
 
 Abrir seu terminal e executar:
 
@@ -138,7 +138,7 @@ cd EventosPro
 ```
 <p></p>
 
-**2. Configurar o Back-End:**
+**2. Configurar o Back-End**
 
 Configurar variáveis de ambiente:
 
@@ -151,7 +151,7 @@ Criar um arquivo (e.g., .env ou usar seu método favorito para configuração do
 - SMTP_PASS=your_smtp_password
 <p></p>
 
-**3. Compilar e Executar o Back-End:**
+**3. Compilar e Executar o Back-End**
 
 Navegue para a pasta back-end (se separada) e execute:
 
@@ -163,7 +163,7 @@ dotnet run
 ```
 <p></p>
 
-**4. Configurar o Front-End:**
+**4. Configurar o Front-End**
 
 Navegar para o diretório front-end (normalmente denominado cliente ou similar):
 
