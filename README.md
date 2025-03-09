@@ -62,6 +62,7 @@ _Read this in another language:_
         <li><a href="#top-contributors">Top contributors</a></li>
       </ul>
     </li>
+    <li><a href="#credits">Credits</a></li>
     <li><a href="#license">License</a></li>
   </ol>
 </details>
@@ -281,6 +282,17 @@ Don't forget to give the project a star! Thanks again!
 <br />
 <p align="left">(<a href="#readme-top">Back to top</a>)</p>
 <br />
+
+
+
+## Credits
+
+This README was inspired by and developed based on the work of [Best-README-Template](https://github.com/othneildrew/Best-README-Template/tree/main), created by [emargi - 
+Mohamad Reza] and on the work of [Readme-Templates](https://github.com/Fernanda-Kipper/Readme-Templates), created by [Fernanda-Kipper - 
+Fernanda Kipper
+]
+
+Thank you for your excellent content and contribution to the open source community!
 
 
 
